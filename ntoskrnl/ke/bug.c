@@ -3,12 +3,17 @@
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/bug.c
  * PURPOSE:         Bugcheck Support
- * PROGRAMMERS:     Alex Ionescu (alex.ionescu@reactos.org), Yaroslav Kibysh
+ * PROGRAMMERS:     Alex Ionescu (alex.ionescu@reactos.org)
+ *                  Thomas Faber
+ *                  Yaroslav Kibysh
+ *                  Nikita Ivanov
  */
 
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
+#include <qrcode.h>
+
 #define NDEBUG
 #include <debug.h>
 
@@ -28,8 +33,8 @@ ULONG KeBugCheckCount = 1;
 ULONG KiHardwareTrigger;
 PUNICODE_STRING KiBugCheckDriver;
 ULONG_PTR KiBugCheckData[5];
-CHAR* AdditionalInformation;
-ULONG ErrorScreenStyle = 0; 
+CHAR* KiAdditionalInformation = "";
+ULONG KiErrorScreenStyle = 0; 
 
 PKNMI_HANDLER_CALLBACK KiNmiCallbackListHead = NULL;
 KSPIN_LOCK KiNmiCallbackListLock;
@@ -595,9 +600,8 @@ NTAPI
 AppendAdditionalData(IN CHAR* NewData,
                      IN BOOLEAN DisplayIt)
 {
-    /* Add new info to AdditionalInformation */
-    sprintf(AdditionalInformation, NewData);
-    //strcat(AdditionalInformation, NewData); // why strcat is broken?
+    /* Add new info to KiAdditionalInformation */
+    strcat(KiAdditionalInformation, NewData); 
     if (DisplayIt) 
         InbvDisplayString(NewData);
 }
@@ -673,6 +677,30 @@ KiDumpParameterImages(IN PCHAR Message,
     }
 }
 
+/*
+  TODO...
+  VOID NTAPI CreateLinearGradientInPalette(ULONG StartIndex, ULONG EndIndex, ULONG ColorStart, ULONG ColorEnd);
+*/
+
+/*VOID
+NTAPI
+DrawPalette(VOID) // test function, i'll remove it later
+{
+	ULONG CurrentColor = 0;
+	ULONG X = 0;
+	ULONG Y = 0;
+	ULONG MaxX = 639;
+	ULONG MaxY = 479;
+	
+	
+	while(Y < MaxY)
+	{
+		InbvSolidColorFill(X, Y, MaxX, MaxY, CurrentColor);
+		Y += MaxY / 15;
+		CurrentColor ++;
+	}
+}*/
+
 VOID
 NTAPI
 SetUpBlueScreen(IN ULONG BackgroundColor)
@@ -680,14 +708,14 @@ SetUpBlueScreen(IN ULONG BackgroundColor)
     PVOID EmojiResource = NULL;
     ULONG PositionY = 75; // 109 default
     
-	if (ErrorScreenStyle >= 1) 
-		PositionY = 0;
-	
+    if (KiErrorScreenStyle >= 1) 
+        PositionY = 0;
+    
     /* Acquire ownership and reset the display */
     InbvAcquireDisplayOwnership();
     InbvResetDisplay();
     
-    if (ErrorScreenStyle <= 1)
+    if (KiErrorScreenStyle <= 1)
     {        
         /* Fill the screen */
         InbvSolidColorFill(0, 0, 639, 479, 1);
@@ -699,40 +727,47 @@ SetUpBlueScreen(IN ULONG BackgroundColor)
         if (EmojiResource)
         {
             /* BitBlt Emoji on the screen */
-			if (ErrorScreenStyle == 0)
-				InbvBitBlt(EmojiResource, 30, PositionY);
-			else if (ErrorScreenStyle == 1)
-				InbvBitBlt(EmojiResource, 278, 184); 
+            if (KiErrorScreenStyle == 0)
+				//InbvBitBlt(EmojiResource, 0, 0);
+                InbvBitBlt(EmojiResource, 68, 36);//30, PositionY);
+            else if (KiErrorScreenStyle == 1)
+                InbvBitBlt(EmojiResource, 278, 184); 
         }
+		// 
+		// TODO:
+		// BackgroundColor = 0xFFbd1c1c;
+		// CreateLinearGradientInPalette(1, 15, BackgroundColor, 0xFFFFFFFF);
+		//
     }
     else
-	{
+    {
         InbvSolidColorFill(0, 0, 639, 479, 4); // If it's not, fill the screen with oldskool blue color
-	}
+    }
     
+		
+	
     /* Change text color to White to attract the user's attention. */
     InbvSetTextColor(15);
-	
+    
     /* Remove filters and allow print text */
     InbvInstallDisplayStringFilter(NULL);
     InbvEnableDisplayString(TRUE);
     
     /* Set the scrolling region */
-    if (ErrorScreenStyle == 0)
-	{
+    if (KiErrorScreenStyle == 0)
+    {
         InbvSetScrollRegion(32, PositionY + 119, 607, 479);
-	}
-    else if (ErrorScreenStyle == 1)
-	{
-		InbvSolidColorFill(0, 0, 639, 479, 1);
-		InbvSetScrollRegion(8, 8, 639, 479);
-	}
-	else
+    }
+    else if (KiErrorScreenStyle == 1)
+    {
+        InbvSolidColorFill(0, 0, 639, 479, 1);
+        InbvSetScrollRegion(8, 8, 639, 479);
+    }
+    else
     {
         InbvSetScrollRegion(0, 0, 639, 479);
         InbvDisplayString("\r\n");
     }
-    
 }
 
 
@@ -747,21 +782,222 @@ SetUpBlueScreen(IN ULONG BackgroundColor)
                    IN ULONG Right,
                    IN ULONG Bottom,
                    IN ULONG Color)*/
+BOOLEAN
+NTAPI
+CanDisplayQR(IN ULONG DataSize)
+{
+	/* Only for QRVersion 25 */
+	if (DataSize > 1853) 
+		return FALSE;
+	else
+		return TRUE;
+}
+
+VOID
+NTAPI
+GetQRSize(IN ULONG DataSize,
+          OUT ULONG *QRVersion,
+		  OUT ULONG *Size)
+{
+	return;
+	if (DataSize <= 61)
+	{
+		*QRVersion = 3;
+		*Size = 4;
+	}
+	else if (DataSize <= 114)
+	{
+		*QRVersion = 4;
+		*Size = 4;
+	}
+	else if (DataSize <= 154)
+	{
+		*QRVersion = 5;
+		*Size = 4;
+	}
+	else if (DataSize <= 195)
+	{
+		*QRVersion = 6;
+		*Size = 4;
+	}
+	else if (DataSize <= 224)
+	{
+		*QRVersion = 7;
+		*Size = 4;
+	}
+	else if (DataSize <= 279)
+	{
+		*QRVersion = 8;
+		*Size = 4;
+	}
+	else if (DataSize <= 335)
+	{
+		*QRVersion = 9;
+		*Size = 4;
+	}
+	else if (DataSize <= 395)
+	{
+		*QRVersion = 10;
+		*Size = 3;
+	}
+	else if (DataSize <= 468)
+	{
+		*QRVersion = 11;
+		*Size = 3;
+	}
+	else if (DataSize <= 535)
+	{
+		*QRVersion = 12;
+		*Size = 3;
+	}
+	else if (DataSize <= 619)
+	{
+		*QRVersion = 13;
+		*Size = 3;
+	}
+	else if (DataSize <= 667)
+	{
+		*QRVersion = 14;
+		*Size = 2;
+	}
+	else if (DataSize <= 758)
+	{
+		*QRVersion = 15;
+		*Size = 2;
+	}
+	else if (DataSize <= 854)
+	{
+		*QRVersion = 16;
+		*Size = 2;
+	}
+	else if (DataSize <= 938)
+	{
+		*QRVersion = 17;
+		*Size = 2;
+	}
+	else if (DataSize <= 1046)
+	{
+		*QRVersion = 18;
+		*Size = 2;
+	}
+	else if (DataSize <= 1153)
+	{
+		*QRVersion = 19;
+		*Size = 3;
+	}
+	else if (DataSize <= 1249)
+	{
+		*QRVersion = 20;
+		*Size = 2;
+	}
+	else if (DataSize <= 1352)
+	{
+		*QRVersion = 21;
+		*Size = 2;
+	}
+	else if (DataSize <= 1460)
+	{
+		*QRVersion = 22;
+		*Size = 2;
+	}
+	else if (DataSize <= 1588)
+	{
+		*QRVersion = 23;
+		*Size = 2;
+	}
+	else if (DataSize <= 1704)
+	{
+		*QRVersion = 24;
+		*Size = 2;
+	}
+	else if (DataSize <= 1853)
+	{
+		*QRVersion = 25;
+		*Size = 2;
+	}
+	else 
+	{
+		*QRVersion = 26;
+		*Size = 2;
+	}
+	
+}
+				   
+				   
 VOID
 NTAPI
 DisplayQRCode(VOID)
 {
     /* TODO */
     //#if QRCODE_IMPLEMENTED
-    ULONG X = 498;
-    ULONG Y = 4;
-    ULONG MaxX = 635;
-    ULONG MaxY = 132;
-    
-    /* The information is in AdditionalInformation variable */
-    
-    InbvSolidColorFill(X, Y, MaxX, MaxY, 15);
-	InbvSolidColorFill(X + 2, Y + 2, MaxX - 2, MaxY - 2, 0);
+	QRCode qrcode;
+	ULONG QRVersion = 21;
+    ULONG X, Y, MaxX, MaxY, QRSize;
+	//ULONG QRCodeBoxMaxSize = 243;
+	ULONG Size = 3;
+	ULONG x, y;
+    uint8_t qrcodeData[qrcode_getBufferSize(QRVersion)];
+	ULONG Result;
+	CHAR AnsiName[64];
+	
+	if (!CanDisplayQR(strlen(KiAdditionalInformation)))
+	{
+		InbvDisplayString("Can't generate QR: The data is too large.\r\n");
+		return;
+	}
+	
+	
+	//strcpy(KiAdditionalInformation, "");
+	
+	//for(x = 0; x < 500; x++)
+	//{
+	//	strcat(KiAdditionalInformation, "x");
+	//}
+	
+	GetQRSize(strlen(KiAdditionalInformation), &QRVersion, &Size);
+	
+	sprintf(AnsiName, "\r\nstrlen: %i, sizeof: %i, QRVersion: %i, Size: %i", strlen(KiAdditionalInformation), sizeof(KiAdditionalInformation), (int)QRVersion, (int)Size);
+	InbvDisplayString(AnsiName);
+	
+	
+    Result = qrcode_initText(&qrcode, qrcodeData, QRVersion, ECC_HIGH, KiAdditionalInformation);
+	
+	if (Result == -1)
+	{
+		InbvDisplayString("Can't generate QR\r\n");
+		return;
+	}
+	
+	//Size = QRCodeBoxMaxSize / qrcode.size;
+	
+	QRSize = qrcode.size * Size;
+	
+	Y = 156 + 8;
+	X = 639 - QRSize - 34;//639 - QRSize - 8;
+	
+	MaxX = X + QRSize;
+	MaxY = Y + QRSize;
+	Result = MaxX + MaxY; // avoid error unused
+    InbvSolidColorFill(X - 4, Y - 4, MaxX + 4, MaxY + 4, 15);
+	
+	
+	for (y = 0; y < qrcode.size; y++)
+	{
+		for (x = 0; x < qrcode.size; x++)
+		{
+			if (qrcode_getModule(&qrcode, x, y))
+            {
+                /* Black */
+                InbvSolidColorFill(X + x * Size, Y + y * Size, X + x * Size + Size, Y + y * Size + Size, 0);
+            }
+            else
+            {
+                /* White */
+                InbvSolidColorFill(X + x * Size, Y + y * Size, X + x * Size + Size, Y + y * Size + Size, 15);
+            }
+        }
+    }
+	
     //#endif
 }
 
@@ -774,15 +1010,10 @@ KiDisplayBlueScreen(IN ULONG MessageId,
                     IN PCHAR Message)
 {
     CHAR AnsiName[75];
-	BOOLEAN DisplayBacktrace = FALSE;
-	ULONG BackgroundColor = 0xFF1070AA; // Blue
-    /* TODO: Implement registry loading?
+    BOOLEAN DisplayBacktrace = FALSE;
+    ULONG BackgroundColor = 0xFF1070AA; // Blue
 	
-       0 - Modern BSOD  + QR-CODE
-       1 - Modern BSOD  + Additional Info
-       2 - Classic BSOD + Additional Info */
-
-    if (ErrorScreenStyle >= 1)
+    if (KiErrorScreenStyle >= 1)
     {
         DisplayBacktrace = TRUE;
     }
@@ -797,6 +1028,9 @@ KiDisplayBlueScreen(IN ULONG MessageId,
     }
     
     /* Print out initial message */
+	if (KiErrorScreenStyle == 0)
+		InbvSetScrollRegion(128, 59, 639, 479);
+	
     KeGetBugMessageText(BUGCHECK_MESSAGE_INTRO, NULL);
     InbvDisplayString("\r\n");
     
@@ -815,11 +1049,17 @@ KiDisplayBlueScreen(IN ULONG MessageId,
             InbvDisplayString("\r\n");
         }
     }
-    
-    InbvDisplayString("\r\n");
+	
+	if (KiErrorScreenStyle == 0)
+	{
+		InbvDisplayString("Check the QR code below for more information.\r\n");
+		InbvSetScrollRegion(32, 158, 319, 479);
+	}
+	else
+		InbvDisplayString("\r\n");
     
     /* Check if this is the generic message and it's friendly bsod style */
-    if (MessageId == BUGCODE_PSS_MESSAGE && ErrorScreenStyle < 2)
+    if (MessageId == BUGCODE_PSS_MESSAGE && KiErrorScreenStyle < 2)
     {
         /* It is, so get the bug code string as well */
         KeGetBugMessageText((ULONG)KiBugCheckData[0], NULL);
@@ -831,14 +1071,18 @@ KiDisplayBlueScreen(IN ULONG MessageId,
     InbvDisplayString("\r\n\r\n\r\n");
     
     
+	//if (KiErrorScreenStyle == 0)
+		//InbvSetScrollRegion(32, 428, 639, 479);
+	
     /* After main messages make the text's color less distracting. */
     InbvSetTextColor(7);
     
-    sprintf(AnsiName, "%s\r\n", NtBuildLab);
+	/* Print NtBuildLab, add it to QR */
+	sprintf(AnsiName, "%s\r\n", NtBuildLab);
     AppendAdditionalData(AnsiName, TRUE);
     
     /* ThFabba's code, why not to add this information? */
-    AppendAdditionalData("\r\n\r\n---stack backtrace---\r\n", DisplayBacktrace);
+    AppendAdditionalData("\r\n---stack backtrace---\r\n", DisplayBacktrace);
     {
         CHAR Buffer[64];
         PVOID *Frame;
@@ -862,20 +1106,21 @@ KiDisplayBlueScreen(IN ULONG MessageId,
                                         AnsiName,
                                         sizeof(AnsiName));
                 FramePc = (PVOID)((ULONG_PTR)FramePc - (ULONG_PTR)LdrEntry->DllBase);
-                sprintf(Buffer, "%p <%s:%p>\r\n", Frame, AnsiName, FramePc);
+                RtlStringCbPrintfA(Buffer, sizeof(Buffer), "%p <%s:%p>\r\n", Frame, AnsiName, FramePc);
             }
             else
             {
-                sprintf(Buffer, "%p <%p>\r\n", Frame, FramePc);
+                RtlStringCbPrintfA(Buffer, sizeof(Buffer), "%p <%p>\r\n", Frame, FramePc);
             }
             AppendAdditionalData(Buffer, DisplayBacktrace);
         } while ((ULONG_PTR)NextFrame > (ULONG_PTR)Frame &&
                  (ULONG_PTR)NextFrame < (ULONG_PTR)Frame + 4 * PAGE_SIZE);
-        sprintf(Buffer, "%p\r\n", NextFrame);
+        RtlStringCbPrintfA(Buffer, sizeof(Buffer), "%p\r\n", NextFrame);
         AppendAdditionalData(Buffer, DisplayBacktrace);
     }
     AppendAdditionalData("---end of backtrace---\r\n\r\n", DisplayBacktrace);
     
+	
     /* Check if we have a driver */
     if (KiBugCheckDriver)
     {
@@ -893,7 +1138,7 @@ KiDisplayBlueScreen(IN ULONG MessageId,
 
     /* Show bug code ID (todo: use symbolic name instead, like INACCESSIBLE BOOT DEVICE)*/
     sprintf(AnsiName,
-            "Stop code: 0x%08X\r\n",
+            "Bug code ID: 0x%08X\r\n",
             (int)MessageId);
     InbvDisplayString(AnsiName);
     AppendAdditionalData(AnsiName, FALSE);
@@ -927,13 +1172,23 @@ KiDisplayBlueScreen(IN ULONG MessageId,
     
     
     /* If Style is 0 (Bitmap + Text + QR) generate and display QR-Code */
-    if (ErrorScreenStyle == 0) 
-        DisplayQRCode();
-	
-	//ErrorScreenStyle++;
-	//if (ErrorScreenStyle >= 3) ErrorScreenStyle = 0;
-	
-	//KiDisplayBlueScreen(MessageId, IsHardError, HardErrCaption, HardErrMessage, Message);
+    if (KiErrorScreenStyle == 0) 
+	{
+		if (CanDisplayQR(strlen(KiAdditionalInformation)))
+			DisplayQRCode();
+		else
+		{
+			KiErrorScreenStyle = 1;
+			/* not the best solution */
+			strcpy(KiAdditionalInformation, ""); // Clean KiAdditionalInformation
+			/* And display everything again. */
+			KiDisplayBlueScreen(MessageId,
+					            IsHardError,
+								HardErrCaption,
+								HardErrMessage,
+								Message);
+		}
+	}
 }
 
 VOID

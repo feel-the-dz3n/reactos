@@ -41,6 +41,7 @@ endif()
 
 list(APPEND SOURCE
     ${REACTOS_SOURCE_DIR}/ntoskrnl/include/ntoskrnl.h
+	${REACTOS_SOURCE_DIR}/ntoskrnl/include/qrcode.h
     ${REACTOS_SOURCE_DIR}/ntoskrnl/cache/section/io.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/cache/section/data.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/cache/section/fault.c
@@ -162,6 +163,7 @@ list(APPEND SOURCE
     ${REACTOS_SOURCE_DIR}/ntoskrnl/io/pnpmgr/pnputil.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/apc.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/balmgr.c
+	${REACTOS_SOURCE_DIR}/ntoskrnl/ke/qrcode.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/bug.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/clock.c
     ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/config.c
