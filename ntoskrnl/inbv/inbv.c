@@ -1048,12 +1048,12 @@ DisplayBootBitmap(IN BOOLEAN TextMode)
 
 #ifdef INBV_ROTBAR_IMPLEMENTED
             /* Server product, use appropriate status bar color */
-            Bar = InbvGetResourceAddress(IDB_BAR_SERVER);
+            Bar = InbvGetResourceAddress(IDB_BAR_BOOT);
 #endif
         }
 #else
         /* Use default status bar */
-        Bar = InbvGetResourceAddress(IDB_BAR_BOOT);
+        Bar = InbvGetResourceAddress(IDB_BAR_WKSTA);
 #endif
 
         /* Make sure we have a logo */
