@@ -1024,7 +1024,7 @@ DisplayBootBitmap(IN BOOLEAN TextMode)
         {
 #ifdef INBV_ROTBAR_IMPLEMENTED
             /* Workstation product, use appropriate status bar color */
-            Bar = InbvGetResourceAddress(IDB_BAR_WKSTA);
+            Bar = InbvGetResourceAddress(IDB_BAR_BOOT);
 #endif
         }
         else
