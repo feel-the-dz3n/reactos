@@ -1053,7 +1053,7 @@ DisplayBootBitmap(IN BOOLEAN TextMode)
         }
 #else
         /* Use default status bar */
-        Bar = InbvGetResourceAddress(IDB_BAR_WKSTA);
+        Bar = InbvGetResourceAddress(IDB_BAR_BOOT);
 #endif
 
         /* Make sure we have a logo */
