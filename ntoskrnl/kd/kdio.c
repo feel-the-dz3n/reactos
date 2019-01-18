@@ -30,6 +30,7 @@ KSPIN_LOCK KdpSerialSpinLock;
 ULONG  SerialPortNumber = DEFAULT_DEBUG_PORT;
 CPPORT SerialPortInfo   = {0, DEFAULT_DEBUG_BAUD_RATE, 0};
 
+
 /* Current Port in use. FIXME: Do we support more then one? */
 ULONG KdpPort;
 
@@ -44,7 +45,8 @@ volatile ULONG KdpDmesgFreeBytes = 0;
 volatile ULONG KdbDmesgTotalWritten = 0;
 KSPIN_LOCK KdpDmesgLogSpinLock;
 volatile BOOLEAN KdbpIsInDmesgMode = FALSE;
-
+HANDLE StdOutput = INVALID_HANDLE_VALUE;
+HANDLE StdInput  = INVALID_HANDLE_VALUE;
 /* UTILITY FUNCTIONS *********************************************************/
 
 /*
@@ -522,6 +524,12 @@ KdpScreenInit(PKD_DISPATCH_TABLE DispatchTable,
               ULONG BootPhase)
 {
     SIZE_T MemSizeMBs;
+	UNICODE_STRING ScreenName = RTL_CONSTANT_STRING(L"\\??\\BlueScreen");
+    UNICODE_STRING KeyboardName = RTL_CONSTANT_STRING(L"\\Device\\KeyboardClass0");
+    OBJECT_ATTRIBUTES ObjectAttributes;
+    IO_STATUS_BLOCK IoStatusBlock;
+    NTSTATUS Status;
+	
     if (!KdpDebugMode.Screen) return;
 
     if (BootPhase == 0)
@@ -551,6 +559,35 @@ KdpScreenInit(PKD_DISPATCH_TABLE DispatchTable,
         InbvSetScrollRegion(0, 0, 639, 479);
         InbvInstallDisplayStringFilter(NULL);
         InbvEnableDisplayString(TRUE);
+		
+		  InitializeObjectAttributes(&ObjectAttributes,
+                               &ScreenName,
+                               0,
+                               NULL,
+                               NULL);
+		Status = NtOpenFile(&StdOutput,
+							FILE_ALL_ACCESS,
+							&ObjectAttributes,
+							&IoStatusBlock,
+							FILE_OPEN,
+							FILE_SYNCHRONOUS_IO_ALERT);
+		if (!NT_SUCCESS(Status))
+			return;
+
+		/* Open the keyboard */
+		InitializeObjectAttributes(&ObjectAttributes,
+								   &KeyboardName,
+								   0,
+								   NULL,
+								   NULL);
+		Status = NtOpenFile(&StdInput,
+							FILE_ALL_ACCESS,
+							&ObjectAttributes,
+							&IoStatusBlock,
+							FILE_OPEN,
+							0);
+		if (!NT_SUCCESS(Status))
+			return;
 
         /* Initialize spinlock */
         KeInitializeSpinLock(&KdpDmesgLogSpinLock);
@@ -626,5 +663,4 @@ KdpPrintString(
     /* Return the Length */
     return Length;
 }
-
 /* EOF */
