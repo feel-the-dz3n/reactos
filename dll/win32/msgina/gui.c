@@ -31,6 +31,7 @@ typedef struct _DLG_DATA
 {
     PGINA_CONTEXT pgContext;
     HBITMAP hBitmap;
+    HBITMAP hRotatingLine;
 } DLG_DATA, *PDLG_DATA;
 
 static BOOL
@@ -283,8 +284,9 @@ WelcomeDialogProc(
 
             pDlgData->pgContext = (PGINA_CONTEXT)lParam;
 
-            /* Load the logo bitmap */
+            /* Load the logo bitmap and rotating line bitmap */
             pDlgData->hBitmap = LoadImageW(pDlgData->pgContext->hDllInstance, MAKEINTRESOURCEW(IDI_ROSLOGO), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
+            pDlgData->hRotatingLine = LoadImageW(pDlgData->pgContext->hDllInstance, MAKEINTRESOURCEW(IDI_LINE), IMAGE_BITMAP, 0, 72, LR_DEFAULTCOLOR);
             return TRUE;
         }
 
@@ -295,6 +297,7 @@ WelcomeDialogProc(
             {
                 BeginPaint(hwndDlg, &ps);
                 DrawStateW(ps.hdc, NULL, NULL, (LPARAM)pDlgData->hBitmap, (WPARAM)0, 0, 0, 0, 0, DST_BITMAP);
+                DrawStateW(ps.hdc, NULL, NULL, (LPARAM)pDlgData->hRotatingLine, (WPARAM)0, 0, 0, 0, 0, DST_BITMAP);
                 EndPaint(hwndDlg, &ps);
             }
             return TRUE;
@@ -302,6 +305,7 @@ WelcomeDialogProc(
         case WM_DESTROY:
         {
             DeleteObject(pDlgData->hBitmap);
+            DeleteObject(pDlgData->hRotatingLine);
             HeapFree(GetProcessHeap(), 0, pDlgData);
             return TRUE;
         }

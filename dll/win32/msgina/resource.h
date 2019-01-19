@@ -56,8 +56,8 @@
 
 #define IDC_ROSLOGO              1007
 
-
-#define IDI_ROSLOGO         20000
+#define IDI_ROSLOGO              20000
+#define IDI_LINE                 20001
 
 #define IDI_NOT_CONNECTED 13
 #define IDI_LOGOFF        21
