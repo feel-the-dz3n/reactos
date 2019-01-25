@@ -319,8 +319,8 @@ WinMain(
     hAppInstance = hInstance;
 
     /* Make us critical */
-    RtlSetProcessIsCritical(TRUE, NULL, FALSE);
-    RtlSetThreadIsCritical(TRUE, NULL, FALSE);
+    //RtlSetProcessIsCritical(TRUE, NULL, FALSE);
+    //RtlSetThreadIsCritical(TRUE, NULL, FALSE);
 
     if (!RegisterLogonProcess(GetCurrentProcessId(), TRUE))
     {

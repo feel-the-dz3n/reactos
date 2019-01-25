@@ -506,6 +506,7 @@ _main(IN INT argc,
             DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
         }
 
+        winlogonStart:
         /* Execute the initial command (Winlogon.exe) */
         Status = SmpExecuteInitialCommand(0, &InitialCommand, &Handles[1], NULL);
         if (!NT_SUCCESS(Status))
@@ -560,6 +561,8 @@ _main(IN INT argc,
                                                    &ProcessInfo,
                                                    sizeof(ProcessInfo),
                                                    NULL);
+
+                goto winlogonStart;
             }
             else
             {
