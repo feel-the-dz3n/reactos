@@ -646,7 +646,7 @@ InbvUpdateProgressBar(IN ULONG Progress)
                           ProgressBarTop,
                           ProgressBarLeft + FillCount,
                           ProgressBarTop + 12,
-                          15);
+                          1);
 
         /* Release the lock */
         InbvReleaseLock();
@@ -1080,7 +1080,7 @@ DisplayBootBitmap(IN BOOLEAN TextMode)
 #endif
 
             /* Set progress bar coordinates and display it */
-            InbvSetProgressBarCoordinates(259, 352);
+            InbvSetProgressBarCoordinates(228, 343);
 
 #ifdef REACTOS_SKUS
             /* Check for non-workstation products */
