@@ -8,7 +8,7 @@
 
 #include <win32k.h>
 
-#define NDEBUG
+// #define NDEBUG
 #include <debug.h>
 
 PDC defaultDCstate = NULL;
@@ -29,12 +29,13 @@ BOOL FASTCALL
 IntCreatePrimarySurface(VOID)
 {
     /* Create surface */
-    PDEVOBJ_pSurface(gppdevPrimary);
+    if (!PDEVOBJ_pSurface(gppdevPrimary))
+        return FALSE;
 
-    DPRINT("IntCreatePrimarySurface, gppdevPrimary=%p, gppdevPrimary->pSurface = %p\n",
+    DPRINT("IntCreatePrimarySurface() gppdevPrimary = 0x%p, gppdevPrimary->pSurface = 0x%p\n",
         gppdevPrimary, gppdevPrimary->pSurface);
 
-    // Init Primary Displays Device Capabilities.
+    /* Init Primary Display Device Capabilities */
     PDEVOBJ_vGetDeviceCaps(gppdevPrimary, &GdiHandleTable->DevCaps);
 
     return TRUE;
@@ -43,6 +44,13 @@ IntCreatePrimarySurface(VOID)
 VOID FASTCALL
 IntDestroyPrimarySurface(VOID)
 {
+    DPRINT("IntDestroyPrimarySurface() gppdevPrimary = 0x%p, gppdevPrimary->pSurface = 0x%p\n",
+        gppdevPrimary, gppdevPrimary->pSurface);
+
+    ASSERT(gppdevPrimary->pSurface);
+    SURFACE_ShareUnlockSurface(gppdevPrimary->pSurface);
+    gppdevPrimary->pSurface = NULL;
+
     UNIMPLEMENTED;
 }
 

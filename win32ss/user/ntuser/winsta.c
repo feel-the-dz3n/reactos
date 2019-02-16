@@ -263,6 +263,8 @@ co_IntInitializeDesktopGraphics(VOID)
     UNICODE_STRING DriverName = RTL_CONSTANT_STRING(L"DISPLAY");
     PDESKTOP pdesk;
 
+DbgBreakPoint();
+
     ScreenDeviceContext = IntGdiCreateDC(&DriverName, NULL, NULL, NULL, FALSE);
     if (NULL == ScreenDeviceContext)
     {

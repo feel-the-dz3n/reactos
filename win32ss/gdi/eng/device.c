@@ -54,7 +54,7 @@ EngpPopulateDeviceModeList(
     for (; *pwsz; pwsz += wcslen(pwsz) + 1)
     {
         /* Try to load the display driver */
-        TRACE("Trying driver: %ls\n", pwsz);
+        ERR("Trying driver: %ls\n", pwsz);
         pldev = EngLoadImageEx(pwsz, LDEV_DEVICE_DISPLAY);
         if (!pldev)
         {
@@ -108,7 +108,7 @@ EngpPopulateDeviceModeList(
         return FALSE;
     }
 
-    TRACE("Looking for mode %lux%lux%lu(%lu Hz)\n",
+    ERR("Looking for mode %lux%lux%lu(%lu Hz)\n",
         pdmDefault->dmPelsWidth,
         pdmDefault->dmPelsHeight,
         pdmDefault->dmBitsPerPel,
@@ -127,7 +127,7 @@ EngpPopulateDeviceModeList(
              (pdm + 1 <= pdmEnd) && (pdm->dmSize != 0);
              pdm = (PDEVMODEW)((PCHAR)pdm + pdm->dmSize + pdm->dmDriverExtra))
         {
-            TRACE("    %S has mode %lux%lux%lu(%lu Hz)\n",
+            ERR("    %S has mode %lux%lux%lu(%lu Hz)\n",
                   pdm->dmDeviceName,
                   pdm->dmPelsWidth,
                   pdm->dmPelsHeight,
@@ -141,7 +141,7 @@ EngpPopulateDeviceModeList(
             {
                 pGraphicsDevice->iDefaultMode = i;
                 pGraphicsDevice->iCurrentMode = i;
-                TRACE("Found default entry: %lu '%ls'\n", i, pdm->dmDeviceName);
+                ERR("Found default entry: %lu '%ls'\n", i, pdm->dmDeviceName);
                 if (pdm->dmDisplayFrequency == pdmDefault->dmDisplayFrequency)
                 {
                     /* Uh oh, even the display frequency matches. */
@@ -239,7 +239,7 @@ EngpRegisterGraphicsDevice(
     PWSTR pwsz;
     ULONG cj;
 
-    TRACE("EngpRegisterGraphicsDevice(%wZ)\n", pustrDeviceName);
+    ERR("EngpRegisterGraphicsDevice(%wZ)\n", pustrDeviceName);
 
     /* Allocate a GRAPHICS_DEVICE structure */
     pGraphicsDevice = ExAllocatePoolWithTag(PagedPool,
@@ -359,7 +359,7 @@ EngpRegisterGraphicsDevice(
 
     /* Unlock loader */
     EngReleaseSemaphore(ghsemGraphicsDeviceList);
-    TRACE("Prepared %lu modes for %ls\n", pGraphicsDevice->cDevModes, pGraphicsDevice->pwszDescription);
+    ERR("Prepared %lu modes for %ls\n", pGraphicsDevice->cDevModes, pGraphicsDevice->pwszDescription);
 
     return pGraphicsDevice;
 }
@@ -374,7 +374,7 @@ EngpFindGraphicsDevice(
     UNICODE_STRING ustrCurrent;
     PGRAPHICS_DEVICE pGraphicsDevice;
     ULONG i;
-    TRACE("EngpFindGraphicsDevice('%wZ', %lu, 0x%lx)\n",
+    ERR("EngpFindGraphicsDevice('%wZ', %lu, 0x%lx)\n",
            pustrDevice, iDevNum, dwFlags);
 
     /* Lock list */

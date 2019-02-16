@@ -76,7 +76,7 @@ InitDisplayDriver(
     DEVMODEW dmDefault;
     DWORD dwVga;
 
-    TRACE("InitDisplayDriver(%S, %S);\n",
+    ERR("InitDisplayDriver(%S, %S);\n",
           pwszDeviceName, pwszRegKey);
 
     /* Open the driver's registry key */
@@ -128,6 +128,13 @@ InitDisplayDriver(
 
     /* Query the default settings */
     RegReadDisplaySettings(hkey, &dmDefault);
+ERR("\n" "Default Display Settings:\n"
+    "XResolution = %lu\n"
+    "YResolution = %lu\n"
+    "BitsPerPel  = %lu\n" "\n",
+    dmDefault.dmPelsWidth,
+    dmDefault.dmPelsHeight,
+    dmDefault.dmBitsPerPel);
 
     /* Query if this is a VGA compatible driver */
     cbSize = sizeof(DWORD);
@@ -163,7 +170,7 @@ InitVideo(VOID)
     ULONG cbValue;
     HKEY hkey;
 
-    TRACE("----------------------------- InitVideo() -------------------------------\n");
+    ERR("----------------------------- InitVideo() -------------------------------\n");
 
     /* Check if VGA mode is requested, by finding the special volatile key created by VIDEOPRT */
     Status = RegOpenKey(L"\\Registry\\Machine\\System\\CurrentControlSet\\Control\\GraphicsDrivers\\BaseVideo", &hkey);
@@ -215,7 +222,11 @@ InitVideo(VOID)
 
         /* Initialize the driver for this device */
         pGraphicsDevice = InitDisplayDriver(awcDeviceName, awcBuffer);
-        if (!pGraphicsDevice) continue;
+        if (!pGraphicsDevice)
+        {
+            ERR("InitDisplayDriver(%S, %S) failed!\n", awcDeviceName, awcDeviceName);
+            continue;
+        }
 
         /* Check if this is a VGA compatible adapter */
         if (pGraphicsDevice->StateFlags & DISPLAY_DEVICE_VGA_COMPATIBLE)
@@ -223,14 +234,14 @@ InitVideo(VOID)
             /* Save this as the VGA adapter */
             if (!gpVgaGraphicsDevice)
                 gpVgaGraphicsDevice = pGraphicsDevice;
-            TRACE("gpVgaGraphicsDevice = %p\n", gpVgaGraphicsDevice);
+            ERR("gpVgaGraphicsDevice = %p\n", gpVgaGraphicsDevice);
         }
         else
         {
             /* Set the first one as primary device */
             if (!gpPrimaryGraphicsDevice)
                 gpPrimaryGraphicsDevice = pGraphicsDevice;
-            TRACE("gpPrimaryGraphicsDevice = %p\n", gpPrimaryGraphicsDevice);
+            ERR("gpPrimaryGraphicsDevice = %p\n", gpPrimaryGraphicsDevice);
         }
     }
 
@@ -246,6 +257,7 @@ InitVideo(VOID)
             /* Set the VgaAdapter as primary */
             gpPrimaryGraphicsDevice = gpVgaGraphicsDevice;
             // FIXME: DEVMODE
+            ERR("Here!\n");
         }
         else
         {
@@ -261,6 +273,7 @@ InitVideo(VOID)
         {
             /* There is, use the VGA device */
             gpPrimaryGraphicsDevice = gpVgaGraphicsDevice;
+            ERR("Using VGA device...\n");
         }
         else
         {
