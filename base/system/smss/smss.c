@@ -506,6 +506,7 @@ _main(IN INT argc,
             DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
         }
 
+        init:
         /* Execute the initial command (Winlogon.exe) */
         Status = SmpExecuteInitialCommand(0, &InitialCommand, &Handles[1], NULL);
         if (!NT_SUCCESS(Status))
@@ -570,6 +571,8 @@ _main(IN INT argc,
             DPRINT1("SMSS: Initial command '%wZ' terminated when it wasn't supposed to.\n",
                     &InitialCommand);
         }
+		
+			goto init;
 
         /* Check if NtQueryInformationProcess was successful */
         if (NT_SUCCESS(Status))
