@@ -12,6 +12,7 @@
 #define IDB_BAR_HOME        9
 #define IDB_ROTATING_LINE   19
 
+#define IDB_SETUP_TEXT      20
 #define IDB_PROF_TEXT       10
 #define IDB_HOME_TEXT       11
 #define IDB_EMBEDDED_TEXT   12
@@ -23,4 +24,4 @@
 #define IDB_STORAGE_SERVER  16
 #define IDB_CLUSTER_SERVER  17
 
-#define IDB_MAX_RESOURCE    IDB_ROTATING_LINE
+#define IDB_MAX_RESOURCE    IDB_SETUP_TEXT

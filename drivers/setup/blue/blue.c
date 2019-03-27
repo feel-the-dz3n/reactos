@@ -233,7 +233,7 @@ ScrCreate(PDEVICE_OBJECT DeviceObject,
 
     if (!InbvCheckDisplayOwnership())
     {
-        ScrAcquireOwnership(DeviceExtension);
+		ScrAcquireOwnership(DeviceExtension);
 
         /* get pointer to video memory */
         BaseAddress.QuadPart = VIDMEM_BASE;
@@ -947,6 +947,9 @@ DriverEntry (PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
         DeviceObject->Flags &= ~DO_DEVICE_INITIALIZING;
     else
         IoDeleteDevice (DeviceObject);
+	
+	ScrAcquireOwnership(DeviceObject->DeviceExtension);
+	
     return Status;
 }
 

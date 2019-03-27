@@ -46,6 +46,7 @@ static BT_PROGRESS_INDICATOR InbvProgressIndicator = {0, 25, 0};
 static INBV_RESET_DISPLAY_PARAMETERS InbvResetDisplayParameters = NULL;
 static ULONG ResourceCount = 0;
 static PUCHAR ResourceList[1 + IDB_MAX_RESOURCE]; // First entry == NULL, followed by 'ResourceCount' entries.
+BOOLEAN InbvDisplaySetupText = FALSE;
 
 #ifdef INBV_ROTBAR_IMPLEMENTED
 /*
@@ -297,6 +298,7 @@ InbvDriverInitialize(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
         /* Reset the video mode in case we do not have a custom boot logo */
         CommandLine = (LoaderBlock->LoadOptions ? _strupr(LoaderBlock->LoadOptions) : NULL);
         ResetMode   = (CommandLine == NULL) || (strstr(CommandLine, "BOOTLOGO") == NULL);
+		InbvDisplaySetupText = TRUE;//(CommandLine != NULL && strstr(CommandLine, "SETUPTXT"));
     }
 
     /* Initialize the video */
@@ -1136,10 +1138,18 @@ DisplayBootBitmap(IN BOOLEAN TextMode)
             ShowProgressBar = FALSE;
         }
 #endif
+		/* Display "Setup Program" text if it was in boot command line */
+		if (InbvDisplaySetupText)
+		{
+			Screen = InbvGetResourceAddress(IDB_SETUP_TEXT);
+			
+			if(Screen)
+				InbvBitBlt(Screen, 0, 329);
+		}
 
         /* Display the boot logo and fade it in */
         BootLogoFadeIn();
-
+		
 #ifdef INBV_ROTBAR_IMPLEMENTED
         if (!RotBarThreadActive && TempRotBarSelection != RB_UNSPECIFIED)
         {
