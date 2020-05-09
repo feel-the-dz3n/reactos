@@ -786,7 +786,6 @@ KeTrapFrameToContext(
     IN OUT PCONTEXT Context
 );
 
-DECLSPEC_NORETURN
 VOID
 NTAPI
 KeBugCheckWithTf(
@@ -1030,7 +1029,6 @@ KiIdleLoop(
     VOID
 );
 
-DECLSPEC_NORETURN
 VOID
 FASTCALL
 KiSystemFatalException(

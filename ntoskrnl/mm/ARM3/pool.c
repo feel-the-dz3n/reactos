@@ -413,6 +413,7 @@ MmDeterminePoolType(IN PVOID PoolAddress)
     else if (PoolAddress >= MmNonPagedPoolStart && PoolAddress <= MmNonPagedPoolEnd)
         return NonPagedPool;
     KeBugCheckEx(BAD_POOL_CALLER, 0x42, (ULONG_PTR)PoolAddress, 0, 0);
+    return NonPagedPool;
 }
 
 PVOID

@@ -1134,7 +1134,6 @@ KiDispatchExceptionFromTrapFrame(IN NTSTATUS Code,
     KiEoiHelper(TrapFrame);
 }
 
-DECLSPEC_NORETURN
 VOID
 FASTCALL
 KiSystemFatalException(IN ULONG ExceptionCode,

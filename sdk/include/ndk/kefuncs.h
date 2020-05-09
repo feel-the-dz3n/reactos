@@ -189,7 +189,6 @@ KiCoprocessorError(
     VOID
 );
 
-DECLSPEC_NORETURN
 VOID
 __cdecl
 KiUnexpectedInterrupt(

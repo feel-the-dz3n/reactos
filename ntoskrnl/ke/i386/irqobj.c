@@ -148,7 +148,6 @@ KiExitInterrupt(IN PKTRAP_FRAME TrapFrame,
     KiEoiHelper(TrapFrame);
 }
 
-DECLSPEC_NORETURN
 VOID
 __cdecl
 KiUnexpectedInterrupt(VOID)

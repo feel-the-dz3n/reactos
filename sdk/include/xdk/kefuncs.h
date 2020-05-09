@@ -112,7 +112,6 @@ NTAPI
 KeLeaveCriticalRegion(VOID);
 
 NTKERNELAPI
-DECLSPEC_NORETURN
 VOID
 NTAPI
 KeBugCheck(
@@ -243,7 +242,6 @@ KeInitializeSpinLock(_Out_ PKSPIN_LOCK SpinLock)
 #endif
 
 NTKERNELAPI
-DECLSPEC_NORETURN
 VOID
 NTAPI
 KeBugCheckEx(
