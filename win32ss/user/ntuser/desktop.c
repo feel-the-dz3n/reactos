@@ -403,9 +403,10 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* Multi-string for Normal Mode */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"ReactOS Version %S\n"
+                                     L"ReactOS Version %S [BSODless]\n"
                                      L"Build %wZ\n"
-                                     L"Reporting NT %u.%u (Build %u%s)\n",
+                                     L"Reporting NT %u.%u (Build %u%s)\n"
+                                     L"https://github.com/feel-the-dz3n/reactos/tree/no-bsod\n",
                                      KERNEL_VERSION_STR,
                                      &BuildLabString,
                                      SharedUserData->NtMajorVersion,
