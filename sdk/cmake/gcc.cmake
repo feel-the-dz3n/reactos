@@ -48,7 +48,7 @@ add_compile_options("$<$<NOT:$<COMPILE_LANGUAGE:CXX>>:-nostdinc>")
 add_compile_options(-mstackrealign -fno-aggressive-loop-optimizations)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    add_compile_options("$<$<COMPILE_LANGUAGE:C>:-std=gnu99;-Wno-microsoft>")
+    add_compile_options("$<$<COMPILE_LANGUAGE:C>:-std=gnu89;-Wno-microsoft>")
     set(CMAKE_LINK_DEF_FILE_FLAG "")
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
     set(CMAKE_LINK_LIBRARY_SUFFIX "")
@@ -66,6 +66,7 @@ if(DBG)
     if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
         add_compile_options("$<$<COMPILE_LANGUAGE:C>:-Wold-style-declaration>")
     endif()
+    add_compile_options("$<$<COMPILE_LANGUAGE:C>:-Wdeclaration-after-statement>")
 endif()
 
 # Debugging
