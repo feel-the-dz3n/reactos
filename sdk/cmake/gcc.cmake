@@ -45,6 +45,9 @@ add_compile_options(-pipe -fms-extensions -fno-strict-aliasing)
 # The case for C++ is handled through the reactos_c++ INTERFACE library
 add_compile_options("$<$<NOT:$<COMPILE_LANGUAGE:CXX>>:-nostdinc>")
 
+# Define dummy wrapper macros for binary literals.
+add_compile_options(-include "${REACTOS_SOURCE_DIR}/sdk/include/reactos/binconst.h")
+
 add_compile_options(-mstackrealign -fno-aggressive-loop-optimizations)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

@@ -37,6 +37,10 @@ if(NOT USE_CLANG_CL)
     add_compile_options(/X /Zl)
 endif()
 
+# Only VS 15+ knows binary literals. For older versions, use specific macros.
+# For newer versions, these macros default to the regular syntax.
+add_compile_options(/FI "${REACTOS_SOURCE_DIR}/sdk/include/reactos/binconst.h")
+
 # Disable buffer security checks by default.
 add_compile_options(/GS-)
 
