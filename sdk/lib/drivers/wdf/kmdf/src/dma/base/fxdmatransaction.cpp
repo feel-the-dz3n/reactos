@@ -1763,8 +1763,7 @@ FxDmaPacketTransaction::_AdapterControl(
             // only during cancelation, though we leave the possibility that
             // the DMA extension may fail the transfer)
             //
-            ASSERTMSG("Unexpected failure of StageTransfer for packet based "
-                      "DMA",
+            ASSERTMSG("Unexpected failure of StageTransfer for packet based DMA",
                        (pDmaTransaction->GetDmaEnabler()->IsBusMaster() == false));
 
             if (pFxDriverGlobals->FxVerifierOn) {

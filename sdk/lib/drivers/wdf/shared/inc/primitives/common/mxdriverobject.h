@@ -20,7 +20,12 @@ Abstract:
 //
 // Forward declare enum
 //
-enum FxDriverObjectUmFlags : USHORT;
+// enum FxDriverObjectUmFlags : USHORT;
+#ifndef _FXFORWARD_HPP_
+enum FxDriverObjectUmFlags : USHORT {
+    DriverObjectUmFlagsLoggingEnabled = 0x1
+};
+#endif
 
 class MxDriverObject
 {

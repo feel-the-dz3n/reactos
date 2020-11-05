@@ -122,9 +122,11 @@ class FxDriver;
 //
 // Valid flags for use in the DRIVER_OBJECT_UM::Flags field.
 //
+#ifndef _FXFORWARD_HPP_
 enum FxDriverObjectUmFlags : USHORT {
     DriverObjectUmFlagsLoggingEnabled = 0x1
 };
+#endif
 
 //
 // Driver object's basic interface.

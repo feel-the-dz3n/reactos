@@ -425,10 +425,12 @@ struct FxPowerCaps {
     ULONG D3Latency;
 };
 
+#ifndef _FXFORWARD_HPP_
 enum FxWmiInstanceAction : UINT32 {
     AddInstance,
     RemoveInstance
 };
+#endif
 
 struct FxEnumerationInfo : public FxStump {
 public:
@@ -3823,7 +3825,7 @@ public:
 
     VOID
     SendEventToAllWakeInterrupts(
-        __in enum  FxWakeInterruptEvents WakeInterruptEvent
+        __in /* enum */ FxWakeInterruptEvents WakeInterruptEvent
     );
 
 private:

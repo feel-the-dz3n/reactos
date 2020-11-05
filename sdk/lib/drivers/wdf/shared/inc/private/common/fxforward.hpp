@@ -117,11 +117,35 @@ class  FxWorkItem;
 class  IFxHasCallbacks;
 class  IFxMemory;
 
-enum FxObjectType : UINT32;
-enum FxWmiInstanceAction : UINT32;
-enum FxDriverObjectUmFlags : USHORT;
-enum FxWakeInterruptEvents : UINT32;
-
+// enum FxObjectType : UINT32;
+#ifndef _FXOBJECT_H_
+enum FxObjectType : UINT32 {
+    FxObjectTypeInvalid = 0,
+    FxObjectTypeInternal,
+    FxObjectTypeExternal,
+    FxObjectTypeEmbedded,
+};
+#endif
+// enum FxWmiInstanceAction : UINT32;
+#ifndef _FXPKGPNP_H_
+enum FxWmiInstanceAction : UINT32 {
+    AddInstance,
+    RemoveInstance
+};
+#endif
+// enum FxDriverObjectUmFlags : USHORT;
+// enum FxWakeInterruptEvents : UINT32;
+#ifndef _FXWAKEINTERRUPTSTATEMACHINE_H_
+enum FxWakeInterruptEvents : UINT32 {
+    WakeInterruptEventInvalid                  = 0x00,
+    WakeInterruptEventIsr                      = 0x01,
+    WakeInterruptEventEnteringD0               = 0x02,
+    WakeInterruptEventLeavingD0                = 0x04,
+    WakeInterruptEventD0EntryFailed            = 0x08,
+    WakeInterruptEventLeavingD0NotArmedForWake = 0x10,
+    WakeInterruptEventNull                     = 0xFF,
+};
+#endif
 
 PVOID
 FxObjectHandleAlloc(

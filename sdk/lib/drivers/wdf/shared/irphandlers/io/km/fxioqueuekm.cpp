@@ -511,7 +511,11 @@ Routine Description:
         return status;
     }
 
+#if (__cplusplus >= 201103L)
     *m_FwdProgContext = {};
+#else
+    RtlZeroMemory(m_FwdProgContext, sizeof(*m_FwdProgContext));
+#endif
 
     //
     // Initialize the things which will not fail first

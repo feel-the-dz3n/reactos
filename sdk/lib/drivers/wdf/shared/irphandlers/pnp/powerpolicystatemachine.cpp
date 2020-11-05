@@ -2251,8 +2251,7 @@ IdleTimeoutManagement::UseSystemManagedIdleTimeout(
                 // IdleTimeoutSystemManaged flag. The caller ensures this.
                 //
                 ASSERTMSG(
-                    "IdleTimeoutManagement::UseSystemManagedIdleTimeout was "
-                    "called more than once\n", FALSE);
+                    "IdleTimeoutManagement::UseSystemManagedIdleTimeout was called more than once\n", FALSE);
             }
 
             //
@@ -2483,8 +2482,7 @@ IdleTimeoutManagement::CommitPowerFrameworkSettings(
             // attempts to set this flag.
             //
             ASSERTMSG(
-                "Attempt to set the IdleTimeoutPoxSettingsSpecified flag more "
-                "than once\n", FALSE);
+                "Attempt to set the IdleTimeoutPoxSettingsSpecified flag more than once\n", FALSE);
             status = STATUS_INTERNAL_ERROR;
             goto exit;
         }

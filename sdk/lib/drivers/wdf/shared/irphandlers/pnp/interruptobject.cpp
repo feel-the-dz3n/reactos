@@ -1907,8 +1907,7 @@ FxInterrupt::TryToAcquireLock(
 {
     LONGLONG    timeout = 0;
 
-    ASSERTMSG("TryToAcquireLock is only available for passive-level "
-              "interrupt handling: ", m_PassiveHandling);
+    ASSERTMSG("TryToAcquireLock is only available for passive-level interrupt handling: ", m_PassiveHandling);
 
     if (FALSE == m_PassiveHandling) {
         return FALSE;

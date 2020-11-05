@@ -1399,8 +1399,7 @@ protected:
         // Packet mode DMA doesn't support cancellation or
         // completion routines.  So this should never run.
         //
-        ASSERTMSG("EvtDmaCompleted is not a valid callback for "
-                  "a packet-mode transaction",
+        ASSERTMSG("EvtDmaCompleted is not a valid callback for a packet-mode transaction",
                   FALSE);
         return;
     }

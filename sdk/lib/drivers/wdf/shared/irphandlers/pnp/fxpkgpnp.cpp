@@ -1754,7 +1754,8 @@ FxPkgPnp::QueryForCapabilities(
                 // which is a safe assumption to start with, one which may be
                 // overridden later.
                 //
-                C_ASSERT(PowerDeviceD0 == static_cast<DEVICE_POWER_STATE>(DeviceWakeDepthD0));
+                /**C_ASSERT(PowerDeviceD0 == static_cast<DEVICE_POWER_STATE>(DeviceWakeDepthD0));**/
+                C_ASSERT(PowerDeviceD0 == (DEVICE_POWER_STATE)(DeviceWakeDepthD0));
                 m_DeviceWake[i - PowerSystemWorking] = (BYTE) caps.DeviceCaps.DeviceWake;
             }
         }

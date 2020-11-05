@@ -114,12 +114,14 @@ struct FxQueryInterfaceParams {
 // 1) have its size rounded up to an alignment value
 // 2) extra size and context header appended to the allocation
 //
+#ifndef _FXFORWARD_HPP_
 enum FxObjectType : UINT32 {
     FxObjectTypeInvalid = 0,
     FxObjectTypeInternal,
     FxObjectTypeExternal,
     FxObjectTypeEmbedded,
 };
+#endif
 
 // Ensures that a BOOL type is generated from a flag mask
 #define FLAG_TO_BOOL(_Flags, _FlagMask) (!!((_Flags) & (_FlagMask)))
