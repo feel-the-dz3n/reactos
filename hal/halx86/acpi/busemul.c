@@ -16,7 +16,7 @@
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 HalpRegisterKdSupportFunctions(VOID)

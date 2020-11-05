@@ -10,6 +10,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, ExpWin32kInit)
+#endif
+
 typedef struct _WIN32_KERNEL_OBJECT_HEADER
 {
     ULONG SessionId;
@@ -253,7 +257,7 @@ ExpDesktopClose(IN PEPROCESS Process OPTIONAL,
                            &Parameters);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExpWin32kInit(VOID)

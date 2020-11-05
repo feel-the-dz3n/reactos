@@ -15,6 +15,10 @@
 //#define NDEBUG
 #include <debug.h>
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, MmInitGlobalKernelPageDirectory)
+#endif
+
 /* GLOBALS *****************************************************************/
 
 #define HYPERSPACE_PAGEDIR_PTR  ((PVOID)0xc0000000)
@@ -441,7 +445,7 @@ MmSetPageProtect(PEPROCESS Process, PVOID Address, ULONG flProtect)
 #endif
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MmInitGlobalKernelPageDirectory(VOID)

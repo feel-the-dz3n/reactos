@@ -36,6 +36,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, CcInitView)
+#endif
+
 /* GLOBALS *******************************************************************/
 
 LIST_ENTRY DirtyVacbListHead;
@@ -1525,7 +1529,7 @@ CcGetFileObjectFromSectionPtrs (
     return NULL;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 CcInitView (

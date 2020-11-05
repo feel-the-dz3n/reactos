@@ -25,7 +25,7 @@ extern ERESOURCE SepSubjectContextLock;
 /* PRIVATE FUNCTIONS **********************************************************/
 
 static
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 SepInitExports(VOID)
 {
@@ -90,7 +90,7 @@ SepInitExports(VOID)
 }
 
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SepInitializationPhase0(VOID)
@@ -125,7 +125,7 @@ SepInitializationPhase0(VOID)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SepInitializationPhase1(VOID)
@@ -233,7 +233,7 @@ SepInitializationPhase1(VOID)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SeInitSystem(VOID)

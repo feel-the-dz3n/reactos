@@ -12,6 +12,11 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined(ALLOC_PRAGMA) && !defined(_MINIHAL_)
+#pragma alloc_text(INIT, HalpMarkAcpiHal)
+#pragma alloc_text(INIT, HalpReportSerialNumber)
+#endif
+
 /* GLOBALS  *******************************************************************/
 
 UCHAR HalpSerialLen;
@@ -20,7 +25,7 @@ CHAR HalpSerialNumber[31];
 /* PRIVATE FUNCTIONS **********************************************************/
 
 #ifndef _MINIHAL_
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 HalpReportSerialNumber(VOID)
@@ -51,7 +56,7 @@ HalpReportSerialNumber(VOID)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 HalpMarkAcpiHal(VOID)

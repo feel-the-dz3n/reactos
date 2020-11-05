@@ -434,7 +434,7 @@ ApphelpCacheWrite(VOID)
 }
 
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 ApphelpCacheInitialize(VOID)

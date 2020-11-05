@@ -295,6 +295,7 @@ MI_IS_MAPPED_PTE(PMMPTE PointerPte)
             (PointerPte->u.Hard.PageFrameNumber != 0));
 }
 
+INIT_FUNCTION
 FORCEINLINE
 VOID
 MmInitGlobalKernelPageDirectory(VOID)

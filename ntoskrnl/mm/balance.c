@@ -16,6 +16,13 @@
 
 #include "ARM3/miarm.h"
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, MmInitializeBalancer)
+#pragma alloc_text(INIT, MmInitializeMemoryConsumer)
+#pragma alloc_text(INIT, MiInitBalancerThread)
+#endif
+
+
 /* TYPES ********************************************************************/
 typedef struct _MM_ALLOCATION_REQUEST
 {
@@ -40,7 +47,7 @@ static KTIMER MiBalancerTimer;
 
 /* FUNCTIONS ****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MmInitializeBalancer(ULONG NrAvailablePages, ULONG NrSystemPages)
@@ -69,7 +76,7 @@ MmInitializeBalancer(ULONG NrAvailablePages, ULONG NrSystemPages)
     MiMemoryConsumers[MC_USER].PagesTarget = NrAvailablePages - MiMinimumAvailablePages;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MmInitializeMemoryConsumer(
@@ -436,7 +443,7 @@ BOOLEAN MmRosNotifyAvailablePage(PFN_NUMBER Page)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitBalancerThread(VOID)

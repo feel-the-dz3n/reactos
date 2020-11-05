@@ -39,7 +39,7 @@ extern ANSI_STRING KdpLogFileName;
 
 /* PRIVATE FUNCTIONS *********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 PCHAR
 NTAPI
 KdpGetDebugMode(PCHAR Currentp2)
@@ -135,7 +135,7 @@ KdpGetDebugMode(PCHAR Currentp2)
     return p2;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KdpCallInitRoutine(ULONG BootPhase)

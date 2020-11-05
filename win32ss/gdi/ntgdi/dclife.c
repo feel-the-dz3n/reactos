@@ -47,7 +47,7 @@ const MATRIX gmxWorldToPageDefault =
 
 /** Internal functions ********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitDcImpl(VOID)

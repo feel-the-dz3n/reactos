@@ -183,7 +183,7 @@ HdlspEnableTerminal(IN BOOLEAN Enable)
     return STATUS_SUCCESS;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 HeadlessInit(IN PLOADER_PARAMETER_BLOCK LoaderBlock)

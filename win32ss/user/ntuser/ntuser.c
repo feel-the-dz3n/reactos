@@ -71,7 +71,7 @@ InitUserAtoms(VOID)
 
 /* FUNCTIONS ******************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitUserImpl(VOID)

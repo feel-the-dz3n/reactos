@@ -77,6 +77,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined(ALLOC_PRAGMA) && !defined(_MINIHAL_)
+#pragma alloc_text(INIT, HalpInitDma)
+#endif
+
 #define MAX_SG_ELEMENTS 0x10
 
 #ifndef _MINIHAL_
@@ -148,7 +152,7 @@ static DMA_OPERATIONS HalpDmaOperations = {
 #endif
 
 #ifndef _MINIHAL_
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 HalpInitDma(VOID)
 {

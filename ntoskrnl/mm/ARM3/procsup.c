@@ -1117,7 +1117,7 @@ MmInitializeProcessAddressSpace(IN PEPROCESS Process,
     return Status;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 MmInitializeHandBuiltProcess(IN PEPROCESS Process,
@@ -1142,7 +1142,7 @@ MmInitializeHandBuiltProcess(IN PEPROCESS Process,
     return STATUS_SUCCESS;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 MmInitializeHandBuiltProcess2(IN PEPROCESS Process)

@@ -753,7 +753,7 @@ VfatReleaseFromLazyWrite(
     ExReleaseResourceLite(&(Fcb->MainResource));
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 VfatInitFastIoRoutines(
     PFAST_IO_DISPATCH FastIoDispatch)

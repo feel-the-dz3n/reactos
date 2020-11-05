@@ -13,6 +13,11 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, IopInitBootLog)
+#pragma alloc_text(INIT, IopStartBootLog)
+#endif
+
 /* GLOBALS ******************************************************************/
 
 static BOOLEAN IopBootLogCreate = FALSE;
@@ -24,7 +29,7 @@ static ERESOURCE IopBootLogResource;
 
 /* FUNCTIONS ****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 IopInitBootLog(BOOLEAN StartBootLog)
 {
@@ -33,7 +38,7 @@ IopInitBootLog(BOOLEAN StartBootLog)
 }
 
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 IopStartBootLog(VOID)
 {

@@ -163,7 +163,7 @@ ExpCheckForApcsDisabled(IN KIRQL Irql,
  * @remarks This routine should only be called once, during system startup.
  *
  *--*/
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 ExpResourceInitialization(VOID)

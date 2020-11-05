@@ -12,6 +12,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, IopInitPlugPlayEvents)
+#endif
+
 typedef struct _PNP_EVENT_ENTRY
 {
     LIST_ENTRY ListEntry;
@@ -26,8 +30,7 @@ static KEVENT IopPnpNotifyEvent;
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
-NTSTATUS
+NTSTATUS INIT_FUNCTION
 IopInitPlugPlayEvents(VOID)
 {
     InitializeListHead(&IopPnpEventQueueHead);

@@ -17,7 +17,7 @@
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 ULONG_PTR
 NTAPI
 Ki386EnableGlobalPage(IN ULONG_PTR Context)
@@ -55,7 +55,7 @@ Ki386EnableGlobalPage(IN ULONG_PTR Context)
     return 0;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiInitializePAT(VOID)
@@ -64,7 +64,7 @@ KiInitializePAT(VOID)
     DPRINT("PAT support detected but not yet taken advantage of\n");
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 ULONG_PTR
 NTAPI
 Ki386EnableTargetLargePage(IN ULONG_PTR Context)

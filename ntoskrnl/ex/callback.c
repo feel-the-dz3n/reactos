@@ -250,7 +250,7 @@ ExpDeleteCallback(IN PVOID Object)
  * @remarks None
  *
  *--*/
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExpInitializeCallbacks(VOID)

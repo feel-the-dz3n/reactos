@@ -57,7 +57,7 @@ BOOLEAN MiPfnsInitialized = FALSE;
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializeSessionSpaceLayout(VOID)
@@ -194,7 +194,7 @@ MiMapPTEs(
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializePageTable(VOID)
@@ -280,7 +280,7 @@ MiInitializePageTable(VOID)
     MiMapPTEs((PVOID)MI_VAD_BITMAP, (PVOID)(MI_WORKING_SET_LIST + PAGE_SIZE - 1));
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiBuildNonPagedPool(VOID)
@@ -371,7 +371,7 @@ MiBuildNonPagedPool(VOID)
 
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiBuildSystemPteSpace(VOID)
@@ -439,8 +439,8 @@ MiSetupPfnForPageTable(
 }
 
 static
-CODE_SEG("INIT")
 VOID
+INIT_FUNCTION
 MiBuildPfnDatabaseFromPageTables(VOID)
 {
     PVOID Address = NULL;
@@ -539,8 +539,8 @@ MiBuildPfnDatabaseFromPageTables(VOID)
 #endif
 }
 
+INIT_FUNCTION
 static
-CODE_SEG("INIT")
 VOID
 MiAddDescriptorToDatabase(
     PFN_NUMBER BasePage,
@@ -609,7 +609,7 @@ MiAddDescriptorToDatabase(
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiBuildPfnDatabase(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -689,7 +689,7 @@ MiBuildPfnDatabase(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     MiReleasePfnLock(OldIrql);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 MiInitMachineDependent(IN PLOADER_PARAMETER_BLOCK LoaderBlock)

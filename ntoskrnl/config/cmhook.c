@@ -32,7 +32,7 @@ typedef struct _REGISTRY_CALLBACK
 
 /* PRIVATE FUNCTIONS *********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 CmpInitCallback(VOID)

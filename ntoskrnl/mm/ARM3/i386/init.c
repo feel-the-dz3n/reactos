@@ -39,7 +39,7 @@ MMPTE MmDecommittedPte = {{MM_DECOMMIT << MM_PTE_SOFTWARE_PROTECTION_BITS}};
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializeSessionSpaceLayout(VOID)
@@ -120,7 +120,7 @@ MiInitializeSessionSpaceLayout(VOID)
                                          MM_ALLOCATION_GRANULARITY);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiComputeNonPagedPoolVa(IN ULONG FreePages)
@@ -236,7 +236,7 @@ MiComputeNonPagedPoolVa(IN ULONG FreePages)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 MiInitMachineDependent(IN PLOADER_PARAMETER_BLOCK LoaderBlock)

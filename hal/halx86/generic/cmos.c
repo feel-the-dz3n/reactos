@@ -13,6 +13,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined(ALLOC_PRAGMA) && !defined(_MINIHAL_)
+#pragma alloc_text(INIT, HalpInitializeCmos)
+#endif
+
 /* GLOBALS *******************************************************************/
 
 UCHAR HalpCmosCenturyOffset;
@@ -153,7 +157,7 @@ HalpSetCmosData(IN ULONG BusNumber,
     return Length - Len;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 HalpInitializeCmos(VOID)

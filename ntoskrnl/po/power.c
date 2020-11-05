@@ -384,7 +384,7 @@ PopSetSystemPowerState(SYSTEM_POWER_STATE PowerState, POWER_ACTION PowerAction)
     return Status;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 PoInitSystem(IN ULONG BootPhase)
@@ -484,7 +484,7 @@ PopIdle0(IN PPROCESSOR_POWER_STATE PowerState)
     HalProcessorIdle();
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 PoInitializePrcb(IN PKPRCB Prcb)

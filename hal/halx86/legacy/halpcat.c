@@ -12,6 +12,15 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined(ALLOC_PRAGMA) && !defined(_MINIHAL_)
+//#pragma alloc_text(INIT, HaliInitPnpDriver)
+#pragma alloc_text(INIT, HalpBuildAddressMap)
+#pragma alloc_text(INIT, HalpGetDebugPortTable)
+#pragma alloc_text(INIT, HalpIs16BitPortDecodeSupported)
+#pragma alloc_text(INIT, HalpSetupAcpiPhase0)
+#pragma alloc_text(INIT, HalReportResourceUsage)
+#endif
+
 /* GLOBALS ********************************************************************/
 
 /* This determines the HAL type */
@@ -29,7 +38,7 @@ PWCHAR HalName = L"PC Compatible Eisa/Isa HAL";
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 HalpSetupAcpiPhase0(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -38,7 +47,7 @@ HalpSetupAcpiPhase0(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     return STATUS_NO_SUCH_DEVICE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 HalpBuildAddressMap(VOID)
@@ -50,7 +59,7 @@ HalpBuildAddressMap(VOID)
     //HalpAddROMRanges();
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 HalpGetDebugPortTable(VOID)
@@ -59,7 +68,7 @@ HalpGetDebugPortTable(VOID)
     return FALSE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 ULONG
 NTAPI
 HalpIs16BitPortDecodeSupported(VOID)
@@ -69,7 +78,7 @@ HalpIs16BitPortDecodeSupported(VOID)
 }
 
 #if 0
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 HaliInitPnpDriver(VOID)
@@ -83,7 +92,7 @@ HaliInitPnpDriver(VOID)
 /*
  * @implemented
  */
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 HalReportResourceUsage(VOID)

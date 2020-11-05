@@ -347,7 +347,7 @@ BitBltAligned(
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 PVOID
 NTAPI
 FindBitmapResource(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
@@ -412,7 +412,7 @@ FindBitmapResource(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
     return Data;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 InbvDriverInitialize(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
@@ -756,7 +756,7 @@ InbvSolidColorFill(IN ULONG Left,
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 InbvUpdateProgressBar(IN ULONG Progress)
@@ -844,7 +844,7 @@ InbvScreenToBufferBlt(OUT PUCHAR Buffer,
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 InbvSetProgressBarCoordinates(IN ULONG Left,
@@ -862,7 +862,7 @@ InbvSetProgressBarCoordinates(IN ULONG Left,
     ShowProgressBar = TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 InbvSetProgressBarSubset(IN ULONG Floor,
@@ -878,7 +878,7 @@ InbvSetProgressBarSubset(IN ULONG Floor,
     InbvProgressState.Bias = (Ceiling * 100) - Floor;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 InbvIndicateProgress(VOID)
@@ -1070,7 +1070,7 @@ InbvRotationThread(
     PsTerminateSystemThread(STATUS_SUCCESS);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 InbvRotBarInit(VOID)
@@ -1080,7 +1080,7 @@ InbvRotBarInit(VOID)
 }
 #endif
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 DisplayBootBitmap(IN BOOLEAN TextMode)
@@ -1364,7 +1364,7 @@ DisplayBootBitmap(IN BOOLEAN TextMode)
 #endif
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 DisplayFilter(PCHAR *String)
@@ -1388,7 +1388,7 @@ DisplayFilter(PCHAR *String)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 FinalizeBootLogo(VOID)

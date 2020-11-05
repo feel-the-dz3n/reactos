@@ -31,6 +31,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined(ALLOC_PRAGMA)
+#pragma alloc_text(INIT, DriverEntry)
+#endif
+
 /* GLOBALS *****************************************************************/
 
 PVFAT_GLOBAL_DATA VfatGlobalData;
@@ -44,7 +48,7 @@ PVFAT_GLOBAL_DATA VfatGlobalData;
  *           RegistryPath = path to our configuration entries
  * RETURNS: Success or failure
  */
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 DriverEntry(

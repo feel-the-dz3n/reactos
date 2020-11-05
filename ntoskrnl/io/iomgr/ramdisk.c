@@ -18,9 +18,15 @@
 
 extern KEVENT PiEnumerationFinished;
 
+/* DATA ***********************************************************************/
+
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, IopStartRamdisk)
+#endif
+
 /* FUNCTIONS ******************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopStartRamdisk(IN PLOADER_PARAMETER_BLOCK LoaderBlock)

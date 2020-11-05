@@ -899,7 +899,7 @@ DriverUnload(IN PDRIVER_OBJECT DriverObject)
 /*
  * This definition doesn't work
  */
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 APIENTRY
 DriverEntry(

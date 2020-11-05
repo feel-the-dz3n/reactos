@@ -11,6 +11,13 @@
 
 /* GLOBALS ********************************************************************/
 
+#ifdef ALLOC_PRAGMA
+#pragma alloc_text(PAGE, Pc98VidSetCurrentMode)
+#pragma alloc_text(PAGE, Pc98VidSetColorRegisters)
+#pragma alloc_text(PAGE, Pc98VidGetPowerState)
+#pragma alloc_text(PAGE, Pc98VidSetPowerState)
+#endif
+
 #define PEGC_MAX_COLORS    256
 
 /* FUNCTIONS ******************************************************************/
@@ -77,7 +84,6 @@ HasPegcController(
     return Success;
 }
 
-CODE_SEG("PAGE")
 VP_STATUS
 FASTCALL
 Pc98VidSetCurrentMode(
@@ -255,7 +261,6 @@ Pc98VidSetCurrentMode(
     return NO_ERROR;
 }
 
-CODE_SEG("PAGE")
 VP_STATUS
 FASTCALL
 Pc98VidSetColorRegisters(
@@ -286,7 +291,6 @@ Pc98VidSetColorRegisters(
     return NO_ERROR;
 }
 
-CODE_SEG("PAGE")
 VP_STATUS
 NTAPI
 Pc98VidGetPowerState(
@@ -315,7 +319,6 @@ Pc98VidGetPowerState(
     return ERROR_DEVICE_REINITIALIZATION_NEEDED;
 }
 
-CODE_SEG("PAGE")
 VP_STATUS
 NTAPI
 Pc98VidSetPowerState(

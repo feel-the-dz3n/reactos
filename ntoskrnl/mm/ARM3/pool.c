@@ -178,7 +178,7 @@ MiProtectedPoolRemoveEntryList(IN PLIST_ENTRY Entry)
     if (PoolBlink) MiProtectFreeNonPagedPool(PoolBlink, 1);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializeNonPagedPoolThresholds(VOID)
@@ -195,7 +195,7 @@ MiInitializeNonPagedPoolThresholds(VOID)
     ASSERT(MiLowNonPagedPoolThreshold < MiHighNonPagedPoolThreshold);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializePoolEvents(VOID)
@@ -270,7 +270,7 @@ MiInitializePoolEvents(VOID)
     KeReleaseQueuedSpinLock(LockQueueMmNonPagedPoolLock, OldIrql);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializeNonPagedPool(VOID)

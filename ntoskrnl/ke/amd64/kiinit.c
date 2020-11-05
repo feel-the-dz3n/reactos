@@ -40,7 +40,7 @@ void KiSystemCallEntry32();
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiInitMachineDependent(VOID)
@@ -160,7 +160,6 @@ KiInitializePcr(IN PKIPCR Pcr,
     KeSetCurrentIrql(PASSIVE_LEVEL);
 }
 
-CODE_SEG("INIT")
 VOID
 NTAPI
 KiInitializeCpu(PKIPCR Pcr)
@@ -269,7 +268,7 @@ KiInitializeTss(IN PKTSS64 Tss,
     __ltr(KGDT64_SYS_TSS);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiInitializeKernelMachineDependent(
@@ -366,7 +365,7 @@ KiInitModuleList(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiSystemStartup(IN PLOADER_PARAMETER_BLOCK LoaderBlock)

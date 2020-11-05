@@ -11,6 +11,13 @@
 
 /* GLOBALS ********************************************************************/
 
+#ifdef ALLOC_PRAGMA
+#pragma alloc_text(INIT, DriverEntry)
+#pragma alloc_text(PAGE, Pc98VidFindAdapter)
+#pragma alloc_text(PAGE, Pc98VidInitialize)
+#pragma alloc_text(PAGE, Pc98VidGetVideoChildDescriptor)
+#endif
+
 const VIDEOMODE VideoModes[] =
 {
     {640, 480, GRAPH_HF_31KHZ, GDC2_CLOCK1_5MHZ, GDC2_CLOCK2_5MHZ,
@@ -46,7 +53,6 @@ static VIDEO_ACCESS_RANGE LegacyRangeList[] =
 /* FUNCTIONS ******************************************************************/
 
 static
-CODE_SEG("PAGE")
 VP_STATUS
 NTAPI
 Pc98VidFindAdapter(
@@ -140,7 +146,6 @@ Pc98VidFindAdapter(
 }
 
 static
-CODE_SEG("PAGE")
 BOOLEAN
 NTAPI
 Pc98VidInitialize(
@@ -159,7 +164,6 @@ Pc98VidInitialize(
 }
 
 static
-CODE_SEG("PAGE")
 VP_STATUS
 NTAPI
 Pc98VidGetVideoChildDescriptor(
@@ -193,7 +197,6 @@ Pc98VidGetVideoChildDescriptor(
     return ERROR_NO_MORE_DEVICES;
 }
 
-CODE_SEG("INIT")
 ULONG
 NTAPI
 DriverEntry(

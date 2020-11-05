@@ -243,22 +243,27 @@ SepSidInTokenEx(
 );
 
 /* Functions */
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SeInitSystem(VOID);
 
+INIT_FUNCTION
 VOID
 NTAPI
 SepInitPrivileges(VOID);
 
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SepInitSecurityIDs(VOID);
 
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SepInitDACLs(VOID);
 
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 SepInitSDs(VOID);
@@ -325,6 +330,7 @@ SepCreateImpersonationTokenDacl(
     _Out_ PACL* Dacl
 );
 
+INIT_FUNCTION
 VOID
 NTAPI
 SepInitializeTokenImplementation(VOID);

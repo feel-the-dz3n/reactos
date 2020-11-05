@@ -230,7 +230,7 @@ IntDesktopObjectClose(
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitDesktopImpl(VOID)

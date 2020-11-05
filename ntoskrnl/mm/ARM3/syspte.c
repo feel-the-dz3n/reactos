@@ -393,7 +393,7 @@ MiReleaseSystemPtes(IN PMMPTE StartingPte,
     KeReleaseQueuedSpinLock(LockQueueSystemSpaceLock, OldIrql);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 MiInitializeSystemPtes(IN PMMPTE StartingPte,

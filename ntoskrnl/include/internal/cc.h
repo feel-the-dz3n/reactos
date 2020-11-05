@@ -286,6 +286,7 @@ extern LAZY_WRITER LazyWriter;
 #define NODE_TYPE_PRIVATE_MAP    0x02FE
 #define NODE_TYPE_SHARED_MAP     0x02FF
 
+INIT_FUNCTION
 VOID
 NTAPI
 CcPfInitializePrefetcher(
@@ -322,6 +323,7 @@ CcRosGetVacb(
     PROS_VACB *Vacb
 );
 
+INIT_FUNCTION
 VOID
 NTAPI
 CcInitView(VOID);
@@ -338,6 +340,7 @@ NTSTATUS
 NTAPI
 CcWriteVirtualAddress(PROS_VACB Vacb);
 
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 CcInitializeCacheManager(VOID);

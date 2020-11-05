@@ -1025,7 +1025,7 @@ cleanup:
 }
 
 static
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 IopEnumerateDetectedDevices(
    IN HANDLE hBaseKey,
@@ -1466,7 +1466,7 @@ cleanup:
 }
 
 static
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 IopIsFirmwareMapperDisabled(VOID)
 {
@@ -1535,7 +1535,7 @@ IopIsFirmwareMapperDisabled(VOID)
     return (KeyValue != 0) ? TRUE : FALSE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopUpdateRootKey(VOID)

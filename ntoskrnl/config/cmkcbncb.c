@@ -20,7 +20,7 @@ PCM_NAME_HASH_TABLE_ENTRY CmpNameCacheTable;
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 CmpInitializeCache(VOID)

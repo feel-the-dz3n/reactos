@@ -20,7 +20,7 @@ extern BOOLEAN RtlpUse16ByteSLists;
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiInitializeKernel(IN PKPROCESS InitProcess,
@@ -51,7 +51,7 @@ KiInitializeHandBuiltThread(
 
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiSystemStartupBootStack(VOID)
@@ -134,7 +134,7 @@ KiSystemStartupBootStack(VOID)
     KiIdleLoop();
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 KiInitializeKernel(IN PKPROCESS InitProcess,

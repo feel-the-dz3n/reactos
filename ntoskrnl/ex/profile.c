@@ -13,6 +13,10 @@
 #define NDEBUG
 #include <debug.h>
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, ExpInitializeProfileImplementation)
+#endif
+
 #define TAG_PROFILE 'forP'
 
 /* GLOBALS *******************************************************************/
@@ -58,7 +62,7 @@ ExpDeleteProfile(PVOID ObjectBody)
     if (Profile->Process) ObDereferenceObject(Profile->Process);
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExpInitializeProfileImplementation(VOID)

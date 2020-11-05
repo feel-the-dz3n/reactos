@@ -60,7 +60,7 @@ unsigned short GetNumberOfBits(unsigned int dwMask)
 }
 
 // Create the system palette
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitPaletteImpl(VOID)

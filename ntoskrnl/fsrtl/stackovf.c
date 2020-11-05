@@ -144,7 +144,7 @@ FsRtlWorkerThread(IN PVOID StartContext)
 /*
  * @implemented
  */
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 FsRtlInitializeWorkerThread(VOID)

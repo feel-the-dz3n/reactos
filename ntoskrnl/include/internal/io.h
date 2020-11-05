@@ -587,6 +587,7 @@ PipCallDriverAddDevice(
     IN PDRIVER_OBJECT DriverObject
 );
 
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopInitializePlugPlayServices(
@@ -697,6 +698,7 @@ IoDestroyDriverList(
     VOID
 );
 
+INIT_FUNCTION
 NTSTATUS
 IopInitPlugPlayEvents(VOID);
 
@@ -752,12 +754,14 @@ IopCreateDeviceKeyPath(
 //
 // PnP Routines
 //
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopUpdateRootKey(
     VOID
 );
 
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 PiInitCacheGroupInformation(
@@ -795,12 +799,14 @@ PnpRegSzToString(
 //
 // Initialization Routines
 //
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopCreateArcNames(
     IN PLOADER_PARAMETER_BLOCK LoaderBlock
 );
 
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopReassignSystemRoot(
@@ -808,6 +814,7 @@ IopReassignSystemRoot(
     OUT PANSI_STRING NtBootPath
 );
 
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 IoInitSystem(
@@ -1004,11 +1011,13 @@ IopShutdownBaseFileSystems(
 //
 // Boot logging support
 //
+INIT_FUNCTION
 VOID
 IopInitBootLog(
     IN BOOLEAN StartBootLog
 );
 
+INIT_FUNCTION
 VOID
 IopStartBootLog(
     VOID
@@ -1080,6 +1089,7 @@ RawFsIsRawFileSystemDeviceObject(
     IN PDEVICE_OBJECT DeviceObject
 );
 
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 RawFsDriverEntry(
@@ -1112,12 +1122,14 @@ PnpRootRegisterDevice(
 //
 // Driver Routines
 //
+INIT_FUNCTION
 VOID
 FASTCALL
 IopInitializeBootDrivers(
     VOID
 );
 
+INIT_FUNCTION
 VOID
 FASTCALL
 IopInitializeSystemDrivers(
@@ -1374,6 +1386,7 @@ IoSetIoCompletion(
 //
 // Ramdisk Routines
 //
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopStartRamdisk(

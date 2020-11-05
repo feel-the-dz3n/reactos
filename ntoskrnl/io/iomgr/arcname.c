@@ -21,13 +21,13 @@ PCHAR IoLoaderArcBootDeviceName;
 
 /* FUNCTIONS *****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopCreateArcNamesCd(IN PLOADER_PARAMETER_BLOCK LoaderBlock
 );
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopCreateArcNamesDisk(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
@@ -35,7 +35,7 @@ IopCreateArcNamesDisk(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
                       IN PBOOLEAN FoundBoot
 );
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopCreateArcNames(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -146,7 +146,7 @@ IopCreateArcNames(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     return Status;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopCreateArcNamesCd(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -408,7 +408,7 @@ Cleanup:
     return Status;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopCreateArcNamesDisk(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
@@ -830,7 +830,7 @@ Cleanup:
     return Status;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 IopReassignSystemRoot(IN PLOADER_PARAMETER_BLOCK LoaderBlock,

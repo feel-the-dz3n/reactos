@@ -87,9 +87,13 @@ extern GENERAL_LOOKASIDE IoCompletionPacketLookaside;
 
 PLOADER_PARAMETER_BLOCK IopLoaderBlock;
 
+#if defined (ALLOC_PRAGMA)
+#pragma alloc_text(INIT, IoInitSystem)
+#endif
+
 /* INIT FUNCTIONS ************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 IopInitLookasideLists(VOID)
@@ -236,7 +240,7 @@ IopInitLookasideLists(VOID)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 IopCreateObjectTypes(VOID)
@@ -325,7 +329,7 @@ IopCreateObjectTypes(VOID)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 IopCreateRootDirectories(VOID)
@@ -390,7 +394,7 @@ IopCreateRootDirectories(VOID)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 IopMarkBootPartition(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -460,7 +464,7 @@ IopMarkBootPartition(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 IoInitSystem(IN PLOADER_PARAMETER_BLOCK LoaderBlock)

@@ -19,7 +19,7 @@
     RTL_SIZEOF_THROUGH_FIELD(LOADER_PARAMETER_EXTENSION, AcpiTableSize)
 
 /* Temporary hack */
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 MmArmInitSystem(
@@ -92,7 +92,7 @@ BOOLEAN ExpRealTimeIsUniversal;
 
 /* FUNCTIONS ****************************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 ExpCreateSystemRootLink(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -204,7 +204,7 @@ ExpCreateSystemRootLink(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     return STATUS_SUCCESS;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 ExpInitNls(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -380,7 +380,7 @@ ExpInitNls(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     ExpNlsTableBase = SectionBase;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 ExpLoadInitialProcess(IN PINIT_BUFFER InitBuffer,
@@ -597,7 +597,7 @@ ExpLoadInitialProcess(IN PINIT_BUFFER InitBuffer,
     *ProcessEnvironment = EnvironmentPtr;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 ULONG
 NTAPI
 ExComputeTickCountMultiplier(IN ULONG ClockIncrement)
@@ -630,7 +630,7 @@ ExComputeTickCountMultiplier(IN ULONG ClockIncrement)
     return (MsIncrement << 24) | MsRemainder;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExpInitSystemPhase0(VOID)
@@ -653,7 +653,7 @@ ExpInitSystemPhase0(VOID)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExpInitSystemPhase1(VOID)
@@ -734,7 +734,7 @@ ExpInitSystemPhase1(VOID)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExInitSystem(VOID)
@@ -760,7 +760,7 @@ ExInitSystem(VOID)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 BOOLEAN
 NTAPI
 ExpIsLoaderValid(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -786,7 +786,7 @@ ExpIsLoaderValid(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     return TRUE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 ExpLoadBootSymbols(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
@@ -867,7 +867,7 @@ ExpLoadBootSymbols(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 ExBurnMemory(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
@@ -913,7 +913,7 @@ ExBurnMemory(IN PLOADER_PARAMETER_BLOCK LoaderBlock,
     }
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 ExpInitializeExecutive(IN ULONG Cpu,
@@ -1332,7 +1332,7 @@ VOID
 NTAPI
 MmFreeLoaderBlock(IN PLOADER_PARAMETER_BLOCK LoaderBlock);
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 VOID
 NTAPI
 Phase1InitializationDiscard(IN PVOID Context)

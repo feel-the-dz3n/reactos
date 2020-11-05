@@ -24,7 +24,7 @@ static LDEVOBJ *gpldevWin32k = NULL;
 
 /** Private functions *********************************************************/
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitLDEVImpl(VOID)

@@ -58,7 +58,7 @@ static KSPIN_LOCK KdpDmesgLogSpinLock;
  *
  * See also: kd64\kdinit.c
  */
-static CODE_SEG("INIT")
+static INIT_FUNCTION
 SIZE_T
 KdpGetMemorySizeInMBs(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
 {
@@ -99,7 +99,7 @@ KdpGetMemorySizeInMBs(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
 }
 
 /* See also: kd64\kdinit.c */
-static CODE_SEG("INIT")
+static INIT_FUNCTION
 VOID
 KdpPrintBanner(IN SIZE_T MemSizeMBs)
 {

@@ -588,7 +588,7 @@ IntKillTimer(PWND Window, UINT_PTR IDEvent, BOOL SystemTimer)
    return pTmr ? TRUE :  FALSE;
 }
 
-CODE_SEG("INIT")
+INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitTimerImpl(VOID)
