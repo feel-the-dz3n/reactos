@@ -8,7 +8,7 @@ Header Name:
 
 Abstract:
 
-    Preprocessor definitions to put code and data into specific sections.
+    Preprocessor definitions to put code and data into the INIT section.
 
 Author:
 
@@ -20,13 +20,19 @@ Author:
 
 #if defined(__GNUC__) || defined(__clang__)
 
-#define DATA_SEG(segment) __attribute__((section(segment)))
-#define CODE_SEG(segment) __attribute__((section(segment)))
+#define INIT_SECTION  __attribute__((section ("INIT")))
+#define INIT_FUNCTION __attribute__((section ("INIT")))
 
 #elif defined(_MSC_VER)
 
-#define DATA_SEG(segment) __declspec(allocate(segment))
-#define CODE_SEG(segment) __declspec(code_seg(segment))
+#pragma comment(linker, "/SECTION:INIT,ERW")
+#define INIT_SECTION  __declspec(allocate("INIT"))
+#if (_MSC_VER >= 1800) // Visual Studio 2013 / version 12.0
+#define INIT_FUNCTION __declspec(code_seg("INIT"))
+#else
+#pragma section("INIT", read,execute,discard)
+#define INIT_FUNCTION
+#endif
 
 #else
 
