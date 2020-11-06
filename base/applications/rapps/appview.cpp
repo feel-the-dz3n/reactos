@@ -208,6 +208,9 @@ HWND CSearchBar::Create(HWND hwndParent)
 
 // **** CComboBox ****
 
+const UINT CComboBox::m_TypeStringID[3] =
+    { IDS_APP_DISPLAY_DETAILS, IDS_APP_DISPLAY_LIST, IDS_APP_DISPLAY_TILE };
+
 CComboBox::CComboBox() : m_Width(80), m_Height(22)
 {
 }
@@ -470,6 +473,17 @@ int ScrnshotDownloadCallback(
 
 
 // **** CAppScrnshotPreview ****
+
+CAppScrnshotPreview::CAppScrnshotPreview() :
+    ScrnshotPrevStauts(SCRNSHOT_PREV_EMPTY),
+    pImage(NULL),
+    hBrokenImgIcon(NULL),
+    bLoadingTimerOn(FALSE),
+    LoadingAnimationFrame(0),
+    BrokenImgSize(BROKENIMG_ICON_SIZE),
+    AsyncInet(NULL),
+    ContentID(0)
+{}
 
 BOOL CAppScrnshotPreview::ProcessWindowMessage(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &theResult, DWORD dwMapId)
 {
@@ -888,6 +902,12 @@ CAppScrnshotPreview::~CAppScrnshotPreview()
 
 // **** CAppInfoDisplay ****
 
+CAppInfoDisplay::CAppInfoDisplay() :
+    pLink(NULL),
+    RichEdit(NULL),
+    ScrnshotPrev(NULL)
+{}
+
 BOOL CAppInfoDisplay::ProcessWindowMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT &theResult, DWORD dwMapId)
 {
     theResult = 0;
@@ -1113,8 +1133,13 @@ CAppInfoDisplay::~CAppInfoDisplay()
 // **** CAppsListView ****
 
 CAppsListView::CAppsListView() :
+    bIsAscending(TRUE),
     bHasCheckboxes(FALSE),
-    nLastHeaderID(-1)
+    ItemCount(0),
+    CheckedItemCount(0),
+    ColumnCount(0),
+    nLastHeaderID(-1),
+    ApplicationViewType(AppViewTypeEmpty)
 {
 }
 
@@ -1876,8 +1901,16 @@ VOID CApplicationView::OnCommand(WPARAM wParam, LPARAM lParam)
     }
 }
 
-CApplicationView::CApplicationView(CMainWindow *MainWindow)
-    : m_MainWindow(MainWindow)
+CApplicationView::CApplicationView(CMainWindow *MainWindow) :
+    m_Panel(NULL),
+    m_Toolbar(NULL),
+    m_ComboBox(NULL),
+    m_SearchBar(NULL),
+    m_ListView(NULL),
+    m_AppsInfo(NULL),
+    m_HSplitter(NULL),
+    m_MainWindow(MainWindow),
+    ApplicationViewType(AppViewTypeEmpty)
 {
 }
 

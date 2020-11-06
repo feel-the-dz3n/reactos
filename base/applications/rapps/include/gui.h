@@ -46,18 +46,18 @@ public:
 class CMainWindow :
     public CWindowImpl<CMainWindow, CWindow, CFrameWinTraits>
 {
-    CUiPanel *m_ClientPanel = NULL;
-    CUiSplitPanel *m_VSplitter = NULL;
+    CUiPanel *m_ClientPanel;
+    CUiSplitPanel *m_VSplitter;
 
-    CSideTreeView *m_TreeView = NULL;
-    CUiWindow<CStatusBar> *m_StatusBar = NULL;
+    CSideTreeView *m_TreeView;
+    CUiWindow<CStatusBar> *m_StatusBar;
 
-    CApplicationView *m_ApplicationView = NULL;
+    CApplicationView *m_ApplicationView;
 
     CAvailableApps m_AvailableApps;
     CInstalledApps m_InstalledApps;
 
-    BOOL bUpdating = FALSE;
+    BOOL bUpdating;
 
     ATL::CStringW szSearchPattern;
     INT SelectedEnumType;

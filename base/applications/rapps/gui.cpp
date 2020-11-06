@@ -94,6 +94,11 @@ CSideTreeView::~CSideTreeView()
 
 CMainWindow::CMainWindow() :
     m_ClientPanel(NULL),
+    m_VSplitter(NULL),
+    m_TreeView(NULL),
+    m_StatusBar(NULL),
+    m_ApplicationView(NULL),
+    bUpdating(FALSE),
     SelectedEnumType(ENUM_ALL_INSTALLED)
 {
 }

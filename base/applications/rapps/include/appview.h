@@ -124,14 +124,14 @@ class CAppScrnshotPreview :
 {
 private:
 
-    SCRNSHOT_STATUS ScrnshotPrevStauts = SCRNSHOT_PREV_EMPTY;
-    Image *pImage = NULL;
-    HICON hBrokenImgIcon = NULL;
-    BOOL bLoadingTimerOn = FALSE;
-    int LoadingAnimationFrame = 0;
-    int BrokenImgSize = BROKENIMG_ICON_SIZE;
-    pASYNCINET AsyncInet = NULL;
-    LONGLONG ContentID = 0; // used to determine whether image has been switched when download complete. Increase by 1 each time the content of this window changed
+    SCRNSHOT_STATUS ScrnshotPrevStauts;
+    Image *pImage;
+    HICON hBrokenImgIcon;
+    BOOL bLoadingTimerOn;
+    int LoadingAnimationFrame;
+    int BrokenImgSize;
+    pASYNCINET AsyncInet;
+    LONGLONG ContentID; // used to determine whether image has been switched when download complete. Increase by 1 each time the content of this window changed
     ATL::CStringW TempImagePath; // currently displayed temp file
 
     BOOL ProcessWindowMessage(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &theResult, DWORD dwMapId);
@@ -164,13 +164,14 @@ public:
     // calculate requested window width by given height
     int GetRequestedWidth(int Height);
 
+    CAppScrnshotPreview();
     ~CAppScrnshotPreview();
 };
 
 class CAppInfoDisplay :
     public CUiWindow<CWindowImpl<CAppInfoDisplay>>
 {
-    LPWSTR pLink = NULL;
+    LPWSTR pLink;
 
 private:
     BOOL ProcessWindowMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT &theResult, DWORD dwMapId);
@@ -183,8 +184,8 @@ private:
 
 public:
 
-    CAppRichEdit *RichEdit = NULL;
-    CAppScrnshotPreview *ScrnshotPrev = NULL;
+    CAppRichEdit *RichEdit;
+    CAppScrnshotPreview *ScrnshotPrev;
 
     static ATL::CWndClassInfo &GetWndClassInfo();
 
@@ -198,6 +199,7 @@ public:
 
     VOID OnCommand(WPARAM wParam, LPARAM lParam);
 
+    CAppInfoDisplay();
     ~CAppInfoDisplay();
 };
 
@@ -210,16 +212,16 @@ class CAppsListView :
         INT iSubItem;
     };
 
-    BOOL bIsAscending = TRUE;
+    BOOL bIsAscending;
     BOOL bHasCheckboxes;
 
-    INT ItemCount = 0;
-    INT CheckedItemCount = 0;
-    INT ColumnCount = 0;
+    INT ItemCount;
+    INT CheckedItemCount;
+    INT ColumnCount;
 
     INT nLastHeaderID;
 
-    APPLICATION_VIEW_TYPE ApplicationViewType = AppViewTypeEmpty;
+    APPLICATION_VIEW_TYPE ApplicationViewType;
 
     HIMAGELIST m_hImageListView;
 
@@ -314,15 +316,15 @@ public:
 class CComboBox :
     public CWindow
 {
-    // ID refers to different types of view
+    // ID refers to different types of view.
     enum
     { m_AppDisplayTypeDetails, m_AppDisplayTypeList, m_AppDisplayTypeTile };
 
-    // string ID for different. this should correspond with the enum above.
-    const UINT m_TypeStringID[3] =
-    { IDS_APP_DISPLAY_DETAILS, IDS_APP_DISPLAY_LIST, IDS_APP_DISPLAY_TILE };
+    // String ID for different types of view. this should correspond with the enum above.
+    static const UINT m_TypeStringID[3]; /* =
+    { IDS_APP_DISPLAY_DETAILS, IDS_APP_DISPLAY_LIST, IDS_APP_DISPLAY_TILE }; */
 
-    const int m_DefaultSelectType = m_AppDisplayTypeDetails;
+    static const int m_DefaultSelectType = m_AppDisplayTypeDetails;
 public:
 
     int m_Width;
@@ -337,15 +339,15 @@ class CApplicationView :
     public CUiWindow<CWindowImpl<CApplicationView>>
 {
 private:
-    CUiPanel *m_Panel = NULL;
-    CMainToolbar *m_Toolbar = NULL;
-    CUiWindow<CComboBox> *m_ComboBox = NULL;
-    CUiWindow<CSearchBar> *m_SearchBar = NULL;
-    CAppsListView *m_ListView = NULL;
-    CAppInfoDisplay *m_AppsInfo = NULL;
-    CUiSplitPanel *m_HSplitter = NULL;
-    CMainWindow *m_MainWindow = NULL;
-    APPLICATION_VIEW_TYPE ApplicationViewType = AppViewTypeEmpty;
+    CUiPanel *m_Panel;
+    CMainToolbar *m_Toolbar;
+    CUiWindow<CComboBox> *m_ComboBox;
+    CUiWindow<CSearchBar> *m_SearchBar;
+    CAppsListView *m_ListView;
+    CAppInfoDisplay *m_AppsInfo;
+    CUiSplitPanel *m_HSplitter;
+    CMainWindow *m_MainWindow;
+    APPLICATION_VIEW_TYPE ApplicationViewType;
 
     BOOL ProcessWindowMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT &theResult, DWORD dwMapId);
 

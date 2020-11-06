@@ -9,7 +9,7 @@ public:
     BOOL IsUserKey;
     REGSAM WowKey;
     HKEY hSubKey;
-    BOOL bIsUpdate = FALSE;
+    BOOL bIsUpdate;
 
     ATL::CStringW szKeyName;
 
