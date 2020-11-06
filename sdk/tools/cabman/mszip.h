@@ -26,12 +26,12 @@ public:
     virtual ULONG Compress(void* OutputBuffer,
                            void* InputBuffer,
                            ULONG InputLength,
-                           PULONG OutputLength) override;
+                           PULONG OutputLength);
     /* Uncompresses a data block */
     virtual ULONG Uncompress(void* OutputBuffer,
                              void* InputBuffer,
                              ULONG InputLength,
-                             PULONG OutputLength) override;
+                             PULONG OutputLength);
 private:
     int Status;
     z_stream ZStream; /* Zlib stream */

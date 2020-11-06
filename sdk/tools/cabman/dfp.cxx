@@ -6,7 +6,7 @@
  * PROGRAMMERS: Casper S. Hornstrup (chorns@users.sourceforge.net)
  *              Colin Finck <mail@colinfinck.de>
  * NOTES:       The directive file format is similar to the
- *              directive file format used by Microsoft's MAKECAB (But not entirely compatible!)
+ *              directive file format used by Microsoft's MAKECAB
  * REVISIONS:
  *   CSH 21/03-2001 Created
  *   CSH 15/08-2003 Made it portable
@@ -45,6 +45,8 @@ CDFParser::CDFParser()
 
     InfModeEnabled = false;
     InfFileHandle = NULL;
+
+    strcpy(FileRelativePath, "");
 }
 
 CDFParser::~CDFParser()
@@ -63,21 +65,21 @@ CDFParser::~CDFParser()
     while (CNNext != NULL)
     {
         CNPrev = CNNext->Next;
-        delete CNNext;
+        free(CNNext);
         CNNext = CNPrev;
     }
     CNNext = DiskLabel;
     while (CNNext != NULL)
     {
         CNPrev = CNNext->Next;
-        delete CNNext;
+        free(CNNext);
         CNNext = CNPrev;
     }
     DNNext = MaxDiskSize;
     while (DNNext != NULL)
     {
         DNPrev = DNNext->Next;
-        delete DNNext;
+        free(DNNext);
         DNNext = DNPrev;
     }
 
@@ -89,7 +91,7 @@ void CDFParser::WriteInfLine(char* InfLine)
 {
     char buf[PATH_MAX];
     char eolbuf[2];
-    const char* destpath;
+    char* destpath;
 
     if (DontGenerateInf)
         return;
@@ -314,7 +316,10 @@ ULONG CDFParser::Parse()
 
     if (!InfFileOnly)
     {
-        OnVerboseMessage("Writing cabinet. This may take a while...\n");
+        if (CABMgr.IsVerbose())
+        {
+            printf("Writing cabinet. This may take a while...\n");
+        }
 
         if (DiskCreated)
         {
@@ -338,7 +343,10 @@ ULONG CDFParser::Parse()
             }
         }
 
-        OnVerboseMessage("Done.\n");
+        if (CABMgr.IsVerbose())
+        {
+            printf("Done.\n");
+        }
     }
 
     return CAB_STATUS_SUCCESS;
@@ -352,9 +360,10 @@ void CDFParser::SetFileRelativePath(char* Path)
  *    Path = Pointer to string with path
  */
 {
-    FileRelativePath = Path;
-    ConvertPath(FileRelativePath);
-    NormalizePath(FileRelativePath);
+    strcpy(FileRelativePath, Path);
+    ConvertPath(FileRelativePath, false);
+    if (strlen(FileRelativePath) > 0)
+        NormalizePath(FileRelativePath, PATH_MAX);
 }
 
 
@@ -489,7 +498,7 @@ bool CDFParser::SetDiskName(PCABINET_NAME *List, ULONG Number, char* String)
         CN = CN->Next;
     }
 
-    CN = new CABINET_NAME;
+    CN = (PCABINET_NAME)malloc(sizeof(CABINET_NAME));
     if (!CN)
         return false;
 
@@ -555,7 +564,7 @@ bool CDFParser::SetDiskNumber(PDISK_NUMBER *List, ULONG Number, ULONG Value)
         DN = DN->Next;
     }
 
-    DN = new DISK_NUMBER;
+    DN = (PDISK_NUMBER)malloc(sizeof(DISK_NUMBER));
     if (!DN)
         return false;
 
@@ -1123,17 +1132,17 @@ ULONG CDFParser::PerformFileCopy()
 
     DPRINT(MID_TRACE, ("Adding file: '%s'   destination: '%s'.\n", SrcName, DstName));
 
-    Status = AddFile(SrcName, std::string());
+    Status = AddFile(SrcName);
     if (Status == CAB_STATUS_CANNOT_OPEN)
     {
-        strcpy(SrcName, FileRelativePath.c_str());
+        strcpy(SrcName, FileRelativePath);
         strcat(SrcName, BaseFilename);
-        Status = AddFile(SrcName, std::string());
+        Status = AddFile(SrcName);
     }
     switch (Status)
     {
         case CAB_STATUS_SUCCESS:
-            sprintf(InfLine, "%s=%s", GetFileName(SrcName).c_str(), DstName);
+            sprintf(InfLine, "%s=%s", GetFileName(SrcName), DstName);
             WriteInfLine(InfLine);
             break;
 

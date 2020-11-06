@@ -69,11 +69,11 @@ public:
     void SetFileRelativePath(char* Path);
     bool InfFileOnly;
     bool DontGenerateInf;
-    std::string FileRelativePath;
+    char FileRelativePath[300];
 private:
     /* Event handlers */
-    virtual bool OnDiskLabel(ULONG Number, char* Label) override;
-    virtual bool OnCabinetName(ULONG Number, char* Name) override;
+    virtual bool OnDiskLabel(ULONG Number, char* Label);
+    virtual bool OnCabinetName(ULONG Number, char* Name);
 
     void WriteInfLine(char* InfLine);
     bool SetDiskName(PCABINET_NAME *List, ULONG Number, char* String);

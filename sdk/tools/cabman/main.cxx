@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
  * PROJECT:     ReactOS cabinet manager
- * FILE:        tools/cabman/cabman.cxx
+ * FILE:        tools/cabman/main.cxx
  * PURPOSE:     Main program
  * PROGRAMMERS: Casper S. Hornstrup (chorns@users.sourceforge.net)
  *              Colin Finck <mail@colinfinck.de>
@@ -193,7 +193,7 @@ void CCABManager::Usage()
     printf("ReactOS Cabinet Manager\n\n");
     printf("CABMAN [-D | -E] [-A] [-L dir] cabinet [filename ...]\n");
     printf("CABMAN [-M mode] -C dirfile [-I] [-RC file] [-P dir]\n");
-    printf("CABMAN [-M mode] -S cabinet filename [-F folder] [filename] [...]\n");
+    printf("CABMAN [-M mode] -S cabinet filename [...]\n");
     printf("  cabinet   Cabinet file.\n");
     printf("  filename  Name of the file to add to or extract from the cabinet.\n");
     printf("            Wild cards and multiple filenames\n");
@@ -206,7 +206,6 @@ void CCABManager::Usage()
     printf("  -C        Create cabinet.\n");
     printf("  -D        Display cabinet directory.\n");
     printf("  -E        Extract files from cabinet.\n");
-    printf("  -F        Put the files from the next 'filename' filter in the cab in folder\filename.\n");
     printf("  -I        Don't create the cabinet, only the .inf file.\n");
     printf("  -L dir    Location to place extracted or generated files\n");
     printf("            (default is current directory).\n");
@@ -234,7 +233,7 @@ bool CCABManager::ParseCmdline(int argc, char* argv[])
     int i;
     bool ShowUsage;
     bool FoundCabinet = false;
-    std::string NextFolder;
+
     ShowUsage = (argc < 2);
 
     for (i = 1; i < argc; i++)
@@ -261,19 +260,6 @@ bool CCABManager::ParseCmdline(int argc, char* argv[])
                 case 'e':
                 case 'E':
                     Mode = CM_MODE_EXTRACT;
-                    break;
-
-                case 'f':
-                case 'F':
-                    if (argv[i][2] == 0)
-                    {
-                        i++;
-                        NextFolder = argv[i];
-                    }
-                    else
-                    {
-                        NextFolder = argv[i] + 2;
-                    }
                     break;
 
                 case 'i':
@@ -388,8 +374,7 @@ bool CCABManager::ParseCmdline(int argc, char* argv[])
             else if(FoundCabinet)
             {
                 // For creating simple cabinets, displaying or extracting them, add the argument as a search criteria
-                AddSearchCriteria(argv[i], NextFolder);
-                NextFolder.clear();
+                AddSearchCriteria(argv[i]);
             }
             else
             {
@@ -467,7 +452,7 @@ bool CCABManager::DisplayCabinet()
                     printf("%s ", Attr2Str(Str, Search.File->Attributes));
                     sprintf(Str, "%u", (UINT)Search.File->FileSize);
                     printf("%s ", Pad(Str, ' ', 13));
-                    printf("%s\n", Search.FileName.c_str());
+                    printf("%s\n", Search.FileName);
 
                     FileCount++;
                     ByteCount += Search.File->FileSize;
@@ -528,7 +513,7 @@ bool CCABManager::ExtractFromCabinet()
         {
             do
             {
-                switch (Status = ExtractFile(Search.FileName.c_str()))
+                switch (Status = ExtractFile(Search.FileName))
                 {
                     case CAB_STATUS_SUCCESS:
                         break;
@@ -604,7 +589,7 @@ bool CCABManager::Run()
 /* Event handlers */
 
 bool CCABManager::OnOverwrite(PCFFILE File,
-                              const char* FileName)
+                              char* FileName)
 /*
  * FUNCTION: Called when extracting a file and it already exists
  * ARGUMENTS:
@@ -623,7 +608,7 @@ bool CCABManager::OnOverwrite(PCFFILE File,
 
 
 void CCABManager::OnExtract(PCFFILE File,
-                            const char* FileName)
+                            char* FileName)
 /*
  * FUNCTION: Called just before extracting a file
  * ARGUMENTS:
@@ -633,14 +618,14 @@ void CCABManager::OnExtract(PCFFILE File,
 {
     if (Verbose)
     {
-        printf("Extracting %s\n", GetFileName(FileName).c_str());
+        printf("Extracting %s\n", GetFileName(FileName));
     }
 }
 
 
 
-void CCABManager::OnDiskChange(const char* CabinetName,
-    const char* DiskLabel)
+void CCABManager::OnDiskChange(char* CabinetName,
+    char* DiskLabel)
     /*
      * FUNCTION: Called when a new disk is to be processed
      * ARGUMENTS:
@@ -656,7 +641,7 @@ void CCABManager::OnDiskChange(const char* CabinetName,
 
 
 void CCABManager::OnAdd(PCFFILE File,
-                        const char* FileName)
+                        char* FileName)
 /*
  * FUNCTION: Called just before adding a file to a cabinet
  * ARGUMENTS:
@@ -666,17 +651,11 @@ void CCABManager::OnAdd(PCFFILE File,
 {
     if (Verbose)
     {
-        printf("Adding %s\n", GetFileName(FileName).c_str());
+        printf("Adding %s\n", GetFileName(FileName));
     }
 }
 
-void CCABManager::OnVerboseMessage(const char* Message)
-{
-    if (Verbose)
-    {
-        printf("%s", Message);
-    }
-}
+CCABManager CABMgr;
 
 int main(int argc, char * argv[])
 /*
@@ -686,12 +665,11 @@ int main(int argc, char * argv[])
  *     argv = Pointer to list of command line arguments
  */
 {
-    CCABManager CABMgr;
+    bool status = false;
 
-    if (!CABMgr.ParseCmdline(argc, argv))
-        return false;
+    if (CABMgr.ParseCmdline(argc, argv))        status = CABMgr.Run();
 
-    return CABMgr.Run() ? 0 : 1;
+    return (status ? 0 : 1);
 }
 
 /* EOF */
